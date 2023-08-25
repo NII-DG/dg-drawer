@@ -3,7 +3,7 @@ from dg_drawer.research_flow.component.node import Node
 
 class TestNode(TestCase):
 
-    # test exec : python -m unittest tests.component.test_node
+    # test exec : python -m unittest tests.research_flow.component.test_node
 
     def test_constructor_min(self):
         id = 1
@@ -62,7 +62,7 @@ class TestNode(TestCase):
         node = Node(id=id, parent_ids=parent_ids, start_time=start_time, node_name=node_name, cx=cx, cy=cy, cr=cr, fill=fill, href=href, status=status)
 
         result = node.generate_svg_component()
-        expected_value = f'<a href="{href}" target="_blank"><circle cx="{cx}" cy="{cy}" r="{cr}" fill="{fill}" /></a>'
+        expected_value = f'<a href="{href}" target="_blank"><circle cx="{cx}" cy="{cy}" r="{cr}" fill="{fill}" stroke="black" stroke-width="2"/></a>'
 
         self.assertEqual(expected_value,result)
 
@@ -79,7 +79,7 @@ class TestNode(TestCase):
         node = Node(id=id, parent_ids=parent_ids, start_time=start_time, node_name=node_name, cx=cx, cy=cy, cr=cr, fill=fill, status=status)
 
         result = node.generate_svg_component()
-        expected_value = f'<circle cx="{cx}" cy="{cy}" r="{cr}" fill="{fill}" />'
+        expected_value = f'<circle cx="{cx}" cy="{cy}" r="{cr}" fill="{fill}" stroke="black" stroke-width="2"/>'
 
         self.assertEqual(expected_value,result)
 
@@ -96,5 +96,5 @@ class TestNode(TestCase):
         node = Node(id=id, parent_ids=parent_ids, start_time=start_time, node_name=node_name, cx=cx, cy=cy, cr=cr, fill=fill, status=status)
 
         result = node.get_lable_svg_component()
-        expected_value =f'<text x="{cx}" y="{(cy - cr)}" text-anchor="middle" font-size="12">{node_name}</text>'
+        expected_value =f'<text x="{cx}" y="{(cy - (cr + 5))}" text-anchor="middle" font-size="12">{node_name}</text>'
         self.assertEqual(expected_value, result)

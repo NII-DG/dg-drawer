@@ -3,7 +3,7 @@ from dg_drawer.research_flow.component.node import Node
 from dg_drawer.research_flow.flow_drawer import FlowDrawer
 
 class TestFlowDrawer(TestCase):
-    # test exec : python -m unittest tests.test_flow_drawer
+    # test exec : python -m unittest tests.research_flow.test_flow_drawer
 
     def test_sort_dicts_by_seq_number(self):
         data_list = [
@@ -137,4 +137,3 @@ class TestFlowDrawer(TestCase):
     }
         fd = FlowDrawer(raw_data=sample_json)
         svg = fd.draw()
-        print(svg)

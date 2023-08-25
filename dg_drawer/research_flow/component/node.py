@@ -39,7 +39,7 @@ class Node():
         self._stroke_width = stroke_width
 
 
-    def generate_svg_component(self)->str:
+    def generate_svg_component(self, target:str='_blank')->str:
         """Generation of SVG node components.
 
         Returns:
@@ -49,7 +49,7 @@ class Node():
         if self._href == "":
             return circle
         else:
-            return f'<a href="{self._href}" target="_blank">{circle}</a>'
+            return f'<a href="{self._href}" target="{target}">{circle}</a>'
 
     def get_lable_svg_component(self)->str:
         """Get Lable's SVG component from the Node instance.

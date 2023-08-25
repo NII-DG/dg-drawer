@@ -175,14 +175,13 @@ class FlowDrawer():
         ## フェーズごとのノード情報リストの並び替え
         sorted_nodes_each_phase = self.sort_nodes_each_phase(nodes_each_phase)
 
-        ## フェーズごとのノード情報リストの再配列
-        rearranged_nodes_each_phase = self.rearrange_nodes_each_phase(sorted_nodes_each_phase)
+        ## TODO : フェーズごとのノード情報リストの再配列
 
         ## フェーズごとのノード情報に描画位置情報を追加する
         positioned_nodes_each_phase = list[list[Node]]()
         ## 初期X座標
         start_x = math.floor(WHOLE_MAX_WIDTH / phase_num / 2)
-        for index, nodes in enumerate(rearranged_nodes_each_phase):
+        for index, nodes in enumerate(sorted_nodes_each_phase):
             positioned_nodes_each_phase.append(self.set_node_location(nodes=nodes, node_x=start_x, color_index=index))
             ## 初期X座標を更新
             start_x += between_node_horizontal_length
@@ -248,40 +247,41 @@ class FlowDrawer():
                     sorted_nodes.append(target_node)
         return sorted_nodes
 
-    def rearrange_nodes_each_phase(self, nodes_each_phase:list[list[Node]])->list[list[Node]]:
+    # TODO : リサーチフロ－来歴図における各ノードの配置を綺麗するためのメソッドを開発する（2023/8/25 時点で優先度：低）
+    # def rearrange_nodes_each_phase(self, nodes_each_phase:list[list[Node]])->list[list[Node]]:
 
-        pre_rearranged_nodes_each_phase = list[list[Node]]()
+    #     pre_rearranged_nodes_each_phase = list[list[Node]]()
 
-        # インデックスリスト（降順）を生成する
-        phase_index_list = list[int]()
-        for index in  range((len(nodes_each_phase)-1), -1, -1):
-            phase_index_list.append(index)
+    #     # インデックスリスト（降順）を生成する
+    #     phase_index_list = list[int]()
+    #     for index in  range((len(nodes_each_phase)-1), -1, -1):
+    #         phase_index_list.append(index)
 
-        pre_rearranged_nodes_each_phase.append(nodes_each_phase[len(nodes_each_phase)-1])
+    #     pre_rearranged_nodes_each_phase.append(nodes_each_phase[len(nodes_each_phase)-1])
 
-        for phase_index in phase_index_list[1:]:
-            # [3,2,1,0]
-            print(phase_index)
-            new_nodes = list[Node]()
-            nodes = nodes_each_phase[phase_index]
-            for node in nodes:
-                new_nodes.append(node)
-                node_id = node.id
-                parent_ids = sorted(node.parent_ids)
-                if len(parent_ids)>0:
-                    priority_parent_id = parent_ids[0]
-                    dummy_parent_ids = [priority_parent_id]
-                else:
-                    dummy_parent_ids = []
-                child_node_num = self.get_child_node_num_by_id(node_id, nodes_each_phase[phase_index+1])
-                new_nodes.extend(self.generate_dummy_nodes(child_node_num-1, dummy_parent_ids))
+    #     for phase_index in phase_index_list[1:]:
+    #         # [3,2,1,0]
+    #         print(phase_index)
+    #         new_nodes = list[Node]()
+    #         nodes = nodes_each_phase[phase_index]
+    #         for node in nodes:
+    #             new_nodes.append(node)
+    #             node_id = node.id
+    #             parent_ids = sorted(node.parent_ids)
+    #             if len(parent_ids)>0:
+    #                 priority_parent_id = parent_ids[0]
+    #                 dummy_parent_ids = [priority_parent_id]
+    #             else:
+    #                 dummy_parent_ids = []
+    #             child_node_num = self.get_child_node_num_by_id(node_id, nodes_each_phase[phase_index+1])
+    #             new_nodes.extend(self.generate_dummy_nodes(child_node_num-1, dummy_parent_ids))
 
-            pre_rearranged_nodes_each_phase.append(new_nodes)
+    #         pre_rearranged_nodes_each_phase.append(new_nodes)
 
-        rearranged_nodes_each_phase = list[list[Node]]()
-        for phase_index in phase_index_list:
-            rearranged_nodes_each_phase.append(pre_rearranged_nodes_each_phase[phase_index])
-        return rearranged_nodes_each_phase
+    #     rearranged_nodes_each_phase = list[list[Node]]()
+    #     for phase_index in phase_index_list:
+    #         rearranged_nodes_each_phase.append(pre_rearranged_nodes_each_phase[phase_index])
+    #     return rearranged_nodes_each_phase
 
     def get_child_node_num_by_id(self, target_node_id:int, nodes:list[Node])->int:
         child_node_num = 0

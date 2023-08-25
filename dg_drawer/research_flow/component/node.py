@@ -1,21 +1,21 @@
 from dg_drawer.research_flow.component.label import Label
 
 class Node():
-    """Nodeクラス
+    """Node class
     """
 
     def __init__(self, id:int, parent_ids:list[int], start_time:int, node_name:str, status:str,cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=2) -> None:
-        """コンストラクタ
+        """Node constructor
 
         Args:
-            id (int): [ノードID]
-            start_time (int): [作成開始時間(Unix時間)]
-            node_name (str): [ノード名]
-            cx (int, optional): [X軸位置]. Defaults to 0.
-            cy (int, optional): [Y軸位置]. Defaults to 0.
-            cr (int, optional): [半径]. Defaults to 0.
-            fill (str, optional): [ノード色]. Defaults to "".
-            href (str, optional): [リンク]. Defaults to "".
+            id (int): [node ID]
+            start_time (int): [Creation start time (Unix time)]
+            node_name (str): [node name]
+            cx (int, optional): [X-axis position]. Defaults to 0.
+            cy (int, optional): [Y-axis position]. Defaults to 0.
+            cr (int, optional): [radius]. Defaults to 0.
+            fill (str, optional): [node colour]. Defaults to "".
+            href (str, optional): [link]. Defaults to "".
         """
         self._id = id
         self._start_time = start_time
@@ -32,21 +32,23 @@ class Node():
         self._stroke_width = stroke_width
 
 
-    def generate_svg_component(self):
-        '''
-        SVGノードコンポーネントの生成
-        '''
+    def generate_svg_component(self)->str:
+        """Generation of SVG node components.
+
+        Returns:
+            str : [SVG node components]
+        """
         circle = f'<circle cx="{self._cx}" cy="{self._cy}" r="{self._cr}" fill="{self._fill}" stroke="{self._stroke}" stroke-width="{self._stroke_width}"/>'
         if self._href == "":
             return circle
         else:
             return f'<a href="{self._href}" target="_blank">{circle}</a>'
 
-    def get_lable_svg_component(self):
-        """NodeインスタンスからLableのSVGコンポーネントを生成
+    def get_lable_svg_component(self)->str:
+        """Get Lable's SVG component from the Node instance.
 
         Returns:
-            [type]: [description]
+            str: [Lable's SVG component]
         """
         label = Label(value=self._node_name, x=self._cx, y=(self._cy - (self._cr + 5)))
         return label.generate_svg_component()

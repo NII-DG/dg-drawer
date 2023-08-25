@@ -126,7 +126,6 @@ class FlowDrawer():
             # Set color
             node.fill = ColorType.get_phase_node_by_index(color_index)
             positioned_nodes.append(node)
-
             # Update of initial X-coordinates
             start_y += self._between_node_vertical_length
 

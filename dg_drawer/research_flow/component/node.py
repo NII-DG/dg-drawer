@@ -1,4 +1,4 @@
-from dg_drawer.research_flow.component.label import Label
+from dg_drawer.research_flow.component.node_label import NoneLabel
 
 class Node():
     """Node class
@@ -9,12 +9,19 @@ class Node():
 
         Args:
             id (int): [node ID]
+
             start_time (int): [Creation start time (Unix time)]
+
             node_name (str): [node name]
+
             cx (int, optional): [X-axis position]. Defaults to 0.
+
             cy (int, optional): [Y-axis position]. Defaults to 0.
+
             cr (int, optional): [radius]. Defaults to 0.
+
             fill (str, optional): [node colour]. Defaults to "".
+
             href (str, optional): [link]. Defaults to "".
         """
         self._id = id
@@ -50,7 +57,7 @@ class Node():
         Returns:
             str: [Lable's SVG component]
         """
-        label = Label(value=self._node_name, x=self._cx, y=(self._cy - (self._cr + 5)))
+        label = NoneLabel(value=self._node_name, x=self._cx, y=(self._cy - (self._cr + 5)))
         return label.generate_svg_component()
 
     '''

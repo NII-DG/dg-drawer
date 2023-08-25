@@ -1,44 +1,66 @@
 import math
-import os
-from dg_drawer.error.error import ArgError, JSONDataError
 from dg_drawer.research_flow.component.node import Node
 from dg_drawer.research_flow.component.line import Line
 from dg_drawer.research_flow.component.frame import Frame
 from dg_drawer.research_flow.enums.color import ColorType
-import json
-
-WHOLE_MAX_WIDTH = 900
-HEADER_HEIGHT = 100
-TOP_MARGIN = 50
-BOTTOM_MARGIN = 50
-BETWEEN_NODE_VERTICAL_LENGTH = 100
-
-
 
 class FlowDrawer():
+    """FlowDrawer class
 
-    def __init__(self, raw_data:dict) -> None:
-        '''
-        コンストラクタ
+    This class manipulates the drawing of research flow history images (SVG).
+    """
 
-        Param
-        ------------------------------------------------------
-        raw_data (dict) : フロー来歴データ（生データ）
+    def __init__(self, raw_data:dict, whole_max_width:int=900, header_height:int=100, top_margin:int=50, bottom_margin:int=50, between_node_vertical_length:int=100 ) -> None:
+        """FlowDrawer constructor
 
-        '''
+        Args:
+            raw_data (dict): [Original data for research flow history]
+
+            whole_max_width (int, optional): [Maximum width of Research Flow History Image]. Defaults to 900.
+
+            header_height (int, optional): [Header height in Research Flow History Image]. Defaults to 100.
+
+            top_margin (int, optional): [Distance of the node from the highest horizontal edge in the body part of the Research Flow History Image.]. Defaults to 50.
+
+            bottom_margin (int, optional): [Distance of the node from the lowest horizontal edge in the body part of the Research Flow History Image]. Defaults to 50.
+
+            between_node_vertical_length (int, optional): [Distance between vertical nodes]. Defaults to 100.
+        """
+
         self._phase_data = raw_data['phase_data']
+        self._whole_max_width = whole_max_width
+        self._header_height = header_height
+        self._top_margin = top_margin
+        self._bottom_margin = bottom_margin
+        self._between_node_vertical_length = between_node_vertical_length
 
-    def get_json_data(self, json_path):
-        try:
-            with open(json_path, mode='r') as f:
-                return json.load(f)
-        except Exception as e:
-            raise ArgError(f'JSON file [{json_path}] is corrupt') from e
+    def pack_svg_tag(self, frame:str, line:str, node:str, node_label:str,  height:int, width:int)->str:
+        """Package three SVG data (frame, line, node, node label) into an SVG tag
 
-    def pack_svg_tag(self, frame:str, line:str, node:str, node_label:str,  height:int, width:int=WHOLE_MAX_WIDTH):
+        Args:
+            frame (str): [frame SVG data]
+
+            line (str): [line SVG data]
+
+            node (str): [node SVG data]
+
+            node_label (str): [node label SVG data]
+
+            height (int): [SVG data height]
+
+        Returns:
+            str: [SVG data]
+        """
         return f'<svg width="{width}" height="{height}">{frame}{line}{node}{node_label}</svg>'
 
-    def get_nodes(self, phase_unit_data)->list[Node]:
+    def get_nodes(self, phase_unit_data:dict)->list[Node]:
+        """Create a node list from phase data.
+        Args:
+            phase_unit_data (dict): [single phase data]
+
+        Returns:
+            list[Node]: [node list]
+        """
         raw_nodes = phase_unit_data['nodes']
         nodes = list[Node]()
         for raw_node in raw_nodes:
@@ -63,110 +85,131 @@ class FlowDrawer():
             nodes.append(node)
         return nodes
 
-    def node_sort_key(self, node:Node):
-        # idsリスト内の最も小さい数値を比較して並び替える関数
-        if not node.parent_ids:  # idsが空の場合は無限大を返して後ろにくるようにする
-            return (float('inf'), 0)
-        return tuple(node.parent_ids)
 
-    def sort_nodes(self, nodes:list[Node])->list[Node]:
-        """各ノードの親IDリストの最も若い親IDを比較して並び替える
+    def sort_phase_data_by_seq_number(self, data_list:list)->list:
+        """Sort phase data in ascending sequence number order.
 
         Args:
-            nodes (list[Node]): [並び替え対象ノードリスト]
+            data_list (list): [phase data list]
 
         Returns:
-            list[Node]: [並び替え後ノードリスト]
+            list: [sorted phase data list]
         """
-        return sorted(nodes, key=self.node_sort_key)
 
-    def sort_phase_data_by_seq_number(self, data_list:list):
         sorted_list = sorted(data_list, key=lambda x: x.get('seq_number', float('inf')))
         return sorted_list
 
     def set_node_location(self, nodes:list[Node], color_index:int, node_x:int, node_r:int=10)->list[Node]:
-        # 初期Y座標
-        start_y = HEADER_HEIGHT + TOP_MARGIN
+        """Set the coordinates in the SGV to each node in the node list.
+
+        Args:
+            nodes (list[Node]): [node list]
+            color_index (int): [color index of the node being drawn.]
+            node_x (int): [X-coordinate at which the node is located]
+            node_r (int, optional): [node radius]. Defaults to 10.
+
+        Returns:
+            list[Node]: [Updated node list.]
+        """
+
+        # Calculate the initial Y-coordinate.
+        start_y = self._header_height + self._top_margin
 
         positioned_nodes = list[Node]()
         for node in nodes:
-            # Y座標の設定
+            # Set Y-coordinate
             node.cy = start_y
-            # X座標の設定
+            # Set X-coordinate
             node.cx = node_x
-            # 半径の設定
+            # Set radius
             node.cr = node_r
-            # ノードカラーの設定
+            # Set color
             node.fill = ColorType.get_phase_node_by_index(color_index)
             positioned_nodes.append(node)
 
-            # 初期X座標の更新
-            start_y += BETWEEN_NODE_VERTICAL_LENGTH
+            # Update of initial X-coordinates
+            start_y += self._between_node_vertical_length
 
         return positioned_nodes
 
     def calculate_body_height(self, nodes_each_phase:list[list[Node]])->int:
-        max_node_num = 0
+        """Calculate the height of the body part of the research flow history image.
 
+        This method calculates the height from the number of nodes in the phase with the highest number of nodes in each phase
+
+        Args:
+            nodes_each_phase (list[list[Node]]): [Group of node data divided by phase]
+
+        Returns:
+            int: [height of the body part of the research flow history image.]
+        """
+
+        # Compare the number of nodes held between each phase to obtain the maximum number of nodes
+        max_node_num = 0
         for nodes in nodes_each_phase:
             node_num = len(nodes)
             if node_num > max_node_num:
                 max_node_num = node_num
             else:
                 continue
-
-        # ボディ部の高さ
-        return (TOP_MARGIN + ((max_node_num-1) * 100) + BOTTOM_MARGIN)
-
+        # Calculate and return the height of the body part
+        return (self._top_margin + ((max_node_num-1) * 100) + self._bottom_margin)
 
 
-    def draw(self):
+
+    def draw(self)->str:
+        """Drawing research flow history as SVG data
+
+        Returns:
+            str: [research flow history as SVG data]
+        """
         phase_data = self.sort_phase_data_by_seq_number(self._phase_data)
 
-        # フェーズ数の算出
+        # Calculation of the number of phases
         phase_num = len(phase_data)
 
-        # フェーズ幅の算出(少数点切り捨て)
-        phase_width = math.floor(WHOLE_MAX_WIDTH / phase_num)
+        # Calculation of phase width (rounding down to the nearest whole number)
+        phase_width = math.floor(self._whole_max_width / phase_num)
 
-        # 水平ノード間隔長
-        between_node_horizontal_length = math.floor(WHOLE_MAX_WIDTH / phase_num)
+        # Calculation of horizontal node spacing length
+        between_node_horizontal_length = math.floor(self._whole_max_width / phase_num)
 
 
 
-        # データの整理
-        ## フェーズごとのノード情報リストの取得
+        # Organize research flow history data
+        ## Obtain a list of node information per phase
         nodes_each_phase = list[list[Node]]()
         for phase_unit_data in phase_data:
             nodes_each_phase.append(self.get_nodes(phase_unit_data))
 
-        ## フェーズごとのノード情報リストの並び替え
+        ## Sort the list of node information by phase
         sorted_nodes_each_phase = self.sort_nodes_each_phase(nodes_each_phase)
 
-        ## TODO : フェーズごとのノード情報リストの再配列
+        ## TODO : Rearrange the list of node information per phase
 
-        ## フェーズごとのノード情報に描画位置情報を追加する
+        # Add drawing position information to the node information for each phase.
         positioned_nodes_each_phase = list[list[Node]]()
-        ## 初期X座標
-        start_x = math.floor(WHOLE_MAX_WIDTH / phase_num / 2)
+        ## Calculate initial X-coordinates.
+        start_x = math.floor(self._whole_max_width / phase_num / 2)
+
         for index, nodes in enumerate(sorted_nodes_each_phase):
             positioned_nodes_each_phase.append(self.set_node_location(nodes=nodes, node_x=start_x, color_index=index))
-            ## 初期X座標を更新
+            ## Update initial X-coordinates
             start_x += between_node_horizontal_length
 
-        # ボディ部の高さを算出する
+        # Calculate the height of the body part.
         body_height =  self.calculate_body_height(positioned_nodes_each_phase)
 
-        # SVGデータの構築
+        # Building SVG data.
 
-        ## フレーム(ヘッダ+ボディ)の構築
-        frame = Frame(phase_data=phase_data, phase_width=phase_width, header_height=HEADER_HEIGHT, body_height=body_height)
+        ## Obtain SVG data for the frame (header + body)
+        frame = Frame(phase_data=phase_data, phase_width=phase_width, header_height=self._header_height, body_height=body_height)
         frame_svg = frame.generate_frame()
 
-        ## ノード間ラインの構築
+        ## Obtain SVG data for inter-node lines
         line_svg = Line.generate_svg_lines(positioned_nodes_each_phase)
 
-        ## ノードの描画
+        ## Obtain the SVG data of a node.
         node_svg = ''
         node_label = ''
         for nodes in positioned_nodes_each_phase:
@@ -174,26 +217,35 @@ class FlowDrawer():
                 node_svg = node_svg + node.generate_svg_component()
                 node_label = node_label + node.get_lable_svg_component()
 
-        svg_height = body_height + HEADER_HEIGHT
-        whole_svg = self.pack_svg_tag(frame=frame_svg, line=line_svg, node=node_svg, node_label=node_label, height=svg_height, width=(phase_width*phase_num))
+        # Calculate the height of the entire SVG data.
+        svg_height = body_height + self._header_height
 
-        return whole_svg
+        # Mature and return as SVG data
+        return self.pack_svg_tag(frame=frame_svg, line=line_svg, node=node_svg, node_label=node_label, height=svg_height, width=(phase_width*phase_num))
 
     def sort_nodes_each_phase(self, nodes_each_phase:list[list[Node]])->list[list[Node]]:
-        # 前フェーズ内のノードデータの並びを考慮して、各フェーズ内のノードデータを並び替える
-        # nodes_each_phaseのフェーズ順序は昇順になっていることを前提とする
+        """Sort_nodes_each_phase all nodes in the research flow history
+
+        Args:
+            nodes_each_phase (list[list[Node]]): [Data before sorting]
+
+        Returns:
+            list[list[Node]]: [Data after sorting]
+        """
+        # Rearrange the node data within each phase, taking into account the order of the node data within the previous phase.
+        # Assuming that the phase order of nodes_each_phase is in ascending order
 
         sorted_nodes_each_phaselist = list[list[Node]]()
 
         for index, nodes in enumerate(nodes_each_phase):
             if index == 0:
-                # 最前フェーズはノードID昇順にソートする
+                # The most recent phase is sorted in ascending order of node ID.
                 sorted_nodes = self.sort_nodes_by_id(nodes)
                 sorted_nodes_each_phaselist.append(sorted_nodes)
             else:
                 sorted_nodes = list[Node]()
-                # 前フェーズの並び従って、ノードデータの親IDリストを見て並び替える。
-                ## 前フェーズのノードデータリスト(並び替え済み)を取得する。
+                # Reorder the node data by looking at the parent ID list according to the order of the previous phase.
+                ## Obtain the node data list (sorted) from the previous phase.
                 pre_phase_nodes = sorted_nodes_each_phaselist[index-1]
                 sorted_nodes = self.sort_nodes_by_pre_phase_nodes(pre_phase_nodes, nodes)
                 sorted_nodes_each_phaselist.append(sorted_nodes)
@@ -202,9 +254,25 @@ class FlowDrawer():
 
 
     def sort_nodes_by_id(self, nodes:list[Node])->list[Node]:
+        """Sort the node list in ascending order by node ID
+
+        Args:
+            nodes (list[Node]): [Data before sorting]
+
+        Returns:
+            list[Node]: [Data after sorting]
+        """
         return sorted(nodes, key=lambda x: x.id)
 
     def sort_nodes_by_pre_phase_nodes(self, pre_phase_nodes:list[Node], target_nodes:list[Node])->list[Node]:
+        """Reorder the node data by looking at the parent ID list according to the order of the previous phase.
+        Args:
+            pre_phase_nodes (list[Node]): [Comparison node list]
+            target_nodes (list[Node]): [Sorted target node list]
+
+        Returns:
+            list[Node]: [Data after sorting]
+        """
         sorted_nodes = list[Node]()
         # 前フェーズの並び従って、ノードデータの親IDリストを見て並び替える。
         for pre_phase_node in pre_phase_nodes:

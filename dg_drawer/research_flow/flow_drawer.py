@@ -17,48 +17,16 @@ BETWEEN_NODE_VERTICAL_LENGTH = 100
 
 class FlowDrawer():
 
-    def __init__(self, raw_json=None, json_path=None) -> None:
+    def __init__(self, raw_data:dict) -> None:
         '''
         コンストラクタ
 
         Param
         ------------------------------------------------------
-        raw_json (dict) : フロー来歴データ（生データ）
-        json_path (str): フロー来歴データJSONファイルのパス
-
-        Note
-        ------------------------------------------------------
-        1. 引数 : raw_jsonとjson_pathはどちらか一方のみセットすることができる
+        raw_data (dict) : フロー来歴データ（生データ）
 
         '''
-
-        if raw_json is None and json_path is None:
-            raise ArgError('Both arguments (raw_json and json_path) are not set')
-        elif raw_json is not None and json_path is not None:
-            raise ArgError('Only one of the arguments (raw_json and json_path) needs to be set')
-
-        if raw_json is not None:
-            if type(raw_json) is not dict:
-                raise ArgError('The argument [raw_json] must be dictionary type')
-            phase_data = raw_json['phase_data']
-            if type(phase_data) is list:
-                self._phase_data = phase_data
-            else:
-                raise JSONDataError('The phase_data\'s value of JSON data must be list type')
-
-        elif json_path is not None:
-            if type(json_path) is not str:
-                raise ArgError('The argument [json_path] must be string type')
-
-            if not os.path.isfile(json_path):
-                raise ArgError(f'The file [{json_path}] does not exist.')
-
-            raw_data = self.get_json_data(json_path)
-            phase_data = raw_data['phase_data']
-            if type(phase_data) is list:
-                self._phase_data = phase_data
-            else:
-                raise JSONDataError('The phase_data\'s value of JSON data must be list type')
+        self._phase_data = raw_data['phase_data']
 
     def get_json_data(self, json_path):
         try:

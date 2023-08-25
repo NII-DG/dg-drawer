@@ -5,7 +5,7 @@ from dg_drawer.error.error import ArgError
 
 
 class TestLabel(TestCase):
-    # test exec : python -m unittest tests.component.test_line
+    # test exec : python -m unittest tests.research_flow.component.test_line
 
     def test_constructor(self):
         p_id = 100

@@ -63,7 +63,7 @@ class FlowDrawer():
             list[Node]: [node list]
         """
         raw_nodes = phase_unit_data['nodes']
-        nodes = List[Node]()
+        nodes = list[Node]()
         for raw_node in raw_nodes:
             status = raw_node['status']
             if status == 'complete':

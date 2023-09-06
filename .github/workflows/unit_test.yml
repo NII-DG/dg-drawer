@@ -2,8 +2,6 @@ name: Run Unit Test by pytest
 on:
   push:
     branches:
-      - master
-      - develop/*
       - feature/*
   pull_request:
     branches:

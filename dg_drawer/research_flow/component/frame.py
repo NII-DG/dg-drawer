@@ -31,7 +31,7 @@ class Frame():
         Returns:
             list[Rectangle]: [Rectangle list]
         """
-        headers = List[Rectangle]()
+        headers = list[Rectangle]()
         start_x = 0
         for index, phase_unit_data in enumerate(self._phase_data):
             phase_name = phase_unit_data['phase_name']
@@ -57,7 +57,7 @@ class Frame():
         Returns:
             list[Rectangle]: [Rectangle list]
         """
-        bodies = List[Rectangle]()
+        bodies = list[Rectangle]()
         start_x = 0
         for phase_unit_data in self._phase_data:
             body = Rectangle(

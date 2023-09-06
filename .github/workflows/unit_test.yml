@@ -25,7 +25,7 @@ jobs:
       # pytest -> JUnit xml形式で結果を出力
       - name: PyTest
         run: |
-          pytest -s ./tests --junit-xml pytest.xml
+          pytest -s ./tests --junit-xml ./pytest.xml
           continue-on-error: true
 
       # テスト結果の表示
@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Unit Test Results (Python 3.10)
-          path: *.xml
+          path: ./*.xml
 
       - name: Download Artifacts
         if: success() || failure()

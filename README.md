@@ -13,7 +13,7 @@ Drawing module for NII data governance
 ## Installation
 
 0. Requirements
-    * Python : >= 3.9
+    * Python : >= 3.8
 
 1. Install dg-drawer
 

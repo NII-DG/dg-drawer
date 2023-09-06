@@ -3,6 +3,7 @@ from dg_drawer.research_flow.component.node import Node
 from dg_drawer.research_flow.component.line import Line
 from dg_drawer.research_flow.component.frame import Frame
 from dg_drawer.research_flow.enums.color import ColorType
+from typing import List
 
 class FlowDrawer():
     """FlowDrawer class
@@ -53,7 +54,7 @@ class FlowDrawer():
         """
         return f'<svg width="{width}" height="{height}">{frame}{line}{node}{node_label}</svg>'
 
-    def get_nodes(self, phase_unit_data:dict)->list[Node]:
+    def get_nodes(self, phase_unit_data:dict)->List[Node]:
         """Create a node list from phase data.
         Args:
             phase_unit_data (dict): [single phase data]
@@ -62,7 +63,7 @@ class FlowDrawer():
             list[Node]: [node list]
         """
         raw_nodes = phase_unit_data['nodes']
-        nodes = list[Node]()
+        nodes = List[Node]()
         for raw_node in raw_nodes:
             status = raw_node['status']
             if status == 'complete':
@@ -86,7 +87,7 @@ class FlowDrawer():
         return nodes
 
 
-    def sort_phase_data_by_seq_number(self, data_list:list)->list:
+    def sort_phase_data_by_seq_number(self, data_list:List)->List:
         """Sort phase data in ascending sequence number order.
 
         Args:
@@ -99,7 +100,7 @@ class FlowDrawer():
         sorted_list = sorted(data_list, key=lambda x: x.get('seq_number', float('inf')))
         return sorted_list
 
-    def set_node_location(self, nodes:list[Node], color_index:int, node_x:int, node_r:int=10)->list[Node]:
+    def set_node_location(self, nodes:List[Node], color_index:int, node_x:int, node_r:int=10)->List[Node]:
         """Set the coordinates in the SGV to each node in the node list.
 
         Args:
@@ -115,7 +116,7 @@ class FlowDrawer():
         # Calculate the initial Y-coordinate.
         start_y = self._header_height + self._top_margin
 
-        positioned_nodes = list[Node]()
+        positioned_nodes = List[Node]()
         for node in nodes:
             # Set Y-coordinate
             node.cy = start_y
@@ -131,7 +132,7 @@ class FlowDrawer():
 
         return positioned_nodes
 
-    def calculate_body_height(self, nodes_each_phase:list[list[Node]])->int:
+    def calculate_body_height(self, nodes_each_phase:List[List[Node]])->int:
         """Calculate the height of the body part of the research flow history image.
 
         This method calculates the height from the number of nodes in the phase with the highest number of nodes in each phase
@@ -177,7 +178,7 @@ class FlowDrawer():
 
         # Organize research flow history data
         ## Obtain a list of node information per phase
-        nodes_each_phase = list[list[Node]]()
+        nodes_each_phase = List[List[Node]]()
         for phase_unit_data in phase_data:
             nodes_each_phase.append(self.get_nodes(phase_unit_data))
 
@@ -187,7 +188,7 @@ class FlowDrawer():
         ## TODO : Rearrange the list of node information per phase
 
         # Add drawing position information to the node information for each phase.
-        positioned_nodes_each_phase = list[list[Node]]()
+        positioned_nodes_each_phase = List[List[Node]]()
         ## Calculate initial X-coordinates.
         start_x = math.floor(self._whole_max_width / phase_num / 2)
 
@@ -222,7 +223,7 @@ class FlowDrawer():
         # Mature and return as SVG data
         return self.pack_svg_tag(frame=frame_svg, line=line_svg, node=node_svg, node_label=node_label, height=svg_height, width=(phase_width*phase_num))
 
-    def sort_nodes_each_phase(self, nodes_each_phase:list[list[Node]])->list[list[Node]]:
+    def sort_nodes_each_phase(self, nodes_each_phase:List[List[Node]])->List[List[Node]]:
         """Sort_nodes_each_phase all nodes in the research flow history
 
         Args:
@@ -234,7 +235,7 @@ class FlowDrawer():
         # Rearrange the node data within each phase, taking into account the order of the node data within the previous phase.
         # Assuming that the phase order of nodes_each_phase is in ascending order
 
-        sorted_nodes_each_phaselist = list[list[Node]]()
+        sorted_nodes_each_phaselist = List[List[Node]]()
 
         for index, nodes in enumerate(nodes_each_phase):
             if index == 0:
@@ -242,7 +243,7 @@ class FlowDrawer():
                 sorted_nodes = self.sort_nodes_by_id(nodes)
                 sorted_nodes_each_phaselist.append(sorted_nodes)
             else:
-                sorted_nodes = list[Node]()
+                sorted_nodes = List[Node]()
                 # Reorder the node data by looking at the parent ID list according to the order of the previous phase.
                 ## Obtain the node data list (sorted) from the previous phase.
                 pre_phase_nodes = sorted_nodes_each_phaselist[index-1]
@@ -252,7 +253,7 @@ class FlowDrawer():
 
 
 
-    def sort_nodes_by_id(self, nodes:list[Node])->list[Node]:
+    def sort_nodes_by_id(self, nodes:List[Node])->List[Node]:
         """Sort the node list in ascending order by node ID
 
         Args:
@@ -263,7 +264,7 @@ class FlowDrawer():
         """
         return sorted(nodes, key=lambda x: x.id)
 
-    def sort_nodes_by_pre_phase_nodes(self, pre_phase_nodes:list[Node], target_nodes:list[Node])->list[Node]:
+    def sort_nodes_by_pre_phase_nodes(self, pre_phase_nodes:List[Node], target_nodes:List[Node])->List[Node]:
         """Reorder the node data by looking at the parent ID list according to the order of the previous phase.
         Args:
             pre_phase_nodes (list[Node]): [Comparison node list]
@@ -272,7 +273,7 @@ class FlowDrawer():
         Returns:
             list[Node]: [Data after sorting]
         """
-        sorted_nodes = list[Node]()
+        sorted_nodes = List[Node]()
         # 前フェーズの並び従って、ノードデータの親IDリストを見て並び替える。
         for pre_phase_node in pre_phase_nodes:
             pre_phase_node_id = pre_phase_node.id
@@ -318,7 +319,7 @@ class FlowDrawer():
     #         rearranged_nodes_each_phase.append(pre_rearranged_nodes_each_phase[phase_index])
     #     return rearranged_nodes_each_phase
 
-    def get_child_node_num_by_id(self, target_node_id:int, nodes:list[Node])->int:
+    def get_child_node_num_by_id(self, target_node_id:int, nodes:List[Node])->int:
         child_node_num = 0
 
         for node in nodes:
@@ -329,8 +330,8 @@ class FlowDrawer():
 
         return child_node_num
 
-    def generate_dummy_nodes(self, node_num:int, parent_ids:list[int])->list[Node]:
-        dummy_nodes = list[Node]()
+    def generate_dummy_nodes(self, node_num:int, parent_ids:List[int])->List[Node]:
+        dummy_nodes = List[Node]()
         for i in range(node_num):
             dummy_nodes.append(Node(
                 id=-1,

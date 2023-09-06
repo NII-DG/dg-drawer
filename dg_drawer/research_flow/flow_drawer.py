@@ -116,7 +116,7 @@ class FlowDrawer():
         # Calculate the initial Y-coordinate.
         start_y = self._header_height + self._top_margin
 
-        positioned_nodes = List[Node]()
+        positioned_nodes = list[Node]()
         for node in nodes:
             # Set Y-coordinate
             node.cy = start_y

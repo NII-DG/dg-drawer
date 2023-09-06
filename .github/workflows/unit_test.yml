@@ -1,5 +1,14 @@
 name: Run Unit Test by pytest
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop/*
+      - feature/*
+  pull_request:
+    branches:
+      - master
+      - develop/*
 
 jobs:
   pytest:

@@ -1,3 +1,4 @@
+from typing import List
 from dg_drawer.error.error import ArgError
 from dg_drawer.research_flow.component.node import Node
 
@@ -42,7 +43,7 @@ class Line():
         return f'<line x1="{self._parent_node_x}" y1="{self._parent_node_y}" x2="{self._child_node_x}" y2="{self._child_node_y}" stroke="{self._stroke}" stroke-width="{self._stroke_width}" />'
 
     @classmethod
-    def generate_svg_lines(cls, nodes_each_pahse:list[list[Node]])->str:
+    def generate_svg_lines(cls, nodes_each_pahse:List[List[Node]])->str:
         """Generate a chunk of SVG line components.
 
         Args:

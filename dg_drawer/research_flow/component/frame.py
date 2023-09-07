@@ -1,12 +1,13 @@
 from dg_drawer.research_flow.component.rectangle import Rectangle
 from dg_drawer.research_flow.enums.color import ColorType
+from typing import List
 
 class Frame():
     """Frame class
     """
 
     def __init__(self,
-                 phase_data: list[dict],
+                 phase_data: List[dict],
                  phase_width:int,
                  header_height:int,
                  body_height:int,
@@ -24,13 +25,13 @@ class Frame():
         self._header_height = header_height
         self._body_height = body_height
 
-    def generate_headers(self)->list[Rectangle]:
+    def generate_headers(self)->List[Rectangle]:
         """Generating a Rectangle list for the header part.
 
         Returns:
             list[Rectangle]: [Rectangle list]
         """
-        headers = list[Rectangle]()
+        headers = []
         start_x = 0
         for index, phase_unit_data in enumerate(self._phase_data):
             phase_name = phase_unit_data['phase_name']
@@ -50,13 +51,13 @@ class Frame():
 
         return headers
 
-    def generate_bodies(self)->list[Rectangle]:
+    def generate_bodies(self)->List[Rectangle]:
         """Generating a Rectangle list for the body part.
 
         Returns:
             list[Rectangle]: [Rectangle list]
         """
-        bodies = list[Rectangle]()
+        bodies = []
         start_x = 0
         for phase_unit_data in self._phase_data:
             body = Rectangle(

@@ -1,10 +1,11 @@
+from typing import List
 from dg_drawer.research_flow.component.node_label import NoneLabel
 
 class Node():
     """Node class
     """
 
-    def __init__(self, id:int, parent_ids:list[int], start_time:int, node_name:str, status:str,cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=2) -> None:
+    def __init__(self, id:int, parent_ids:List[int], start_time:int, node_name:str, status:str,cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=2) -> None:
         """Node constructor
 
         Args:

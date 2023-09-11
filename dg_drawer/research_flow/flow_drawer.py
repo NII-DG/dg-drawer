@@ -262,7 +262,7 @@ class FlowDrawer():
                                     if parent_id != parent_node.id:
                                         add_node_parent_ids.append(parent_id)
 
-                                add_node = DummyNode(
+                                add_node = Node(
                                                 id=node.id,
                                                 parent_ids=add_node_parent_ids,
                                                 create_datetime=node.create_datetime,

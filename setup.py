@@ -8,7 +8,7 @@ def _requires_from_file(filename):
 
 setuptools.setup(
     name="dg-drawer",
-    version="1.0.0",
+    version="1.0.1",
     description="Drawing module for NII Data Governance",
     license='Apache License 2.0',
     author="NII",

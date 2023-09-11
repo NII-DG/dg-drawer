@@ -246,10 +246,10 @@ class FlowDrawer():
 
         grouped_node = [] # グループNodeリスト
         for pre_phase_node in pre_phase_nodes:
-            pre_phase_node_id = pre_phase_node.id # 親ID
+            pre_phase_node_id = pre_phase_node.id # 前フェーズのNodeID
             grouping_node = []
             for target_node in target_nodes:
-                if pre_phase_node_id in target_node.parent_ids and not self.is_contain_id_in_grouped_node(grouped_node, pre_phase_node_id):
+                if pre_phase_node_id in target_node.parent_ids and not self.is_contain_id_in_grouped_node(grouped_node, target_node.id):
                     # 前フェーズのIDが次のフェーズ親IDリストに含まれ、かつグループNodeリストに既にターゲットNodeが含まれいない場合追加
                     grouping_node.append(target_node)
             grouped_node.append(grouping_node)

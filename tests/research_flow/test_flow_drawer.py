@@ -102,7 +102,7 @@ class TestFlowDrawer(TestCase):
         phase_C = PhaseStatus(
             seq_number=3,
             name='phase_C',
-            sub_flow_data=[node_C_7, node_C_8, node_C_8, node_C_9, node_C_11]
+            sub_flow_data=[node_C_7, node_C_8, node_C_9, node_C_11]
         )
 
 
@@ -123,4 +123,3 @@ class TestFlowDrawer(TestCase):
         research_flow_status = [phase_A, phase_B, phase_C, phase_D]
         fd = FlowDrawer(research_flow_status=research_flow_status)
         svg = fd.draw()
-        print(svg)

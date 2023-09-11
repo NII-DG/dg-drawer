@@ -232,6 +232,8 @@ class FlowDrawer():
                     # ２つ前のフェーズにある親ノードを特定する。
                     for no_exist_id in no_exist_ids:
                         start_last_index = index-2
+                        if start_last_index < 0:
+                            start_last_index = 0
                         parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, start_last_index, no_exist_id)
                         if index == -1 or parent_node is None:
                             raise Exception(f'Not Found Parent Nodes [start_last_index] : {start_last_index}, [no_exist_id] : {no_exist_id}')

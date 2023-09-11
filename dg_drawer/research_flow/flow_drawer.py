@@ -165,6 +165,15 @@ class FlowDrawer():
 
         # fill dumpy node
         filled_nodes_each_phase = self.fill_dummy_nodes_each_phase(nodes_each_phase)
+        for ns in filled_nodes_each_phase:
+            print('<<<<<<<<<<<<<<<<<<<<<<<<<<')
+            for n in ns:
+                print('=======node==========')
+                print(n.id)
+                print(n.parent_ids)
+                print(n.node_name)
+                print(n.create_datetime)
+                print('=================')
 
         ## Sort the list of node information by phase
         sorted_nodes_each_phase = self.sort_nodes_each_phase(filled_nodes_each_phase)

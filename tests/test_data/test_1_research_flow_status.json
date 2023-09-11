@@ -1,0 +1,57 @@
+{
+    "research_flow_pahse_data": [
+        {
+            "seq_number": 1,
+            "name": "research_preparation",
+            "sub_flow_data": [
+                {
+                    "id": "rp_sf_1",
+                    "name": "rp_sf_1 name",
+                    "link": "rp_sf_1 link",
+                    "parent_ids": [],
+                    "create_datetime": 1
+                }
+            ]
+        },
+        {
+            "seq_number": 3,
+            "name": "paper_writing",
+            "sub_flow_data": [
+                {
+                    "id": "pw_sf_1",
+                    "name": "pw_sf_1 name",
+                    "link": "pw_sf_1 link",
+                    "parent_ids": [
+                        "ex_sf_1",
+                        "ex_sf_2"
+                    ],
+                    "create_datetime": 100
+                }
+            ]
+        },
+        {
+            "seq_number": 2,
+            "name": "experiments",
+            "sub_flow_data": [
+                {
+                    "id": "ex_sf_1",
+                    "name": "ex_sf_1 name",
+                    "link": "ex_sf_1 link",
+                    "parent_ids": [
+                        "rp_sf_1"
+                    ],
+                    "create_datetime": 10
+                },
+                {
+                    "id": "ex_sf_2",
+                    "name": "ex_sf_2 name",
+                    "link": "ex_sf_2 link",
+                    "parent_ids": [
+                        "rp_sf_1"
+                    ],
+                    "create_datetime": 11
+                }
+            ]
+        }
+    ]
+}

@@ -231,9 +231,10 @@ class FlowDrawer():
                     # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
                     # ２つ前のフェーズにある親ノードを特定する。
                     for no_exist_id in no_exist_ids:
-                        parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, index-2, no_exist_id)
+                        start_last_index = index-2
+                        parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, start_last_index, no_exist_id)
                         if index == -1 or parent_node is None:
-                            raise Exception('Not Found Parent Nodes')
+                            raise Exception(f'Not Found Parent Nodes [start_last_index] : {start_last_index}, [no_exist_id] : {no_exist_id}')
 
                         diff_index_num = index - parent_pahse_index # フェーズの差
                         addition_datetime = math.floor((node.create_datetime - parent_node.create_datetime) / diff_index_num) # 加算ようUnixTime
@@ -274,14 +275,6 @@ class FlowDrawer():
                             copy_nodes_each_phase[edit_index].append(add_node)
         return copy_nodes_each_phase
 
-
-
-
-
-
-
-
-
     def get_pahse_index_and_node_with_node_id(self, nodes_each_phase:List[List[Node]], start_last_index:int, id):
 
         for index in (start_last_index, -1, -1):
@@ -307,12 +300,6 @@ class FlowDrawer():
         else:
             diff_ids = set(ids) ^ set(exist_ids)
             return list(diff_ids)
-
-
-
-
-
-
 
     def sort_nodes_each_phase(self, nodes_each_phase:List[List[Node]])->List[List[Node]]:
         """Sort_nodes_each_phase all nodes in the research flow history

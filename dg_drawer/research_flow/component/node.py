@@ -128,3 +128,8 @@ class Node():
     @property
     def node_name(self):
         return self._node_name
+
+class DummyNode(Node):
+
+    def __init__(self, id:str, parent_ids:List[str], create_datetime:int, node_name:str, cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=1) -> None:
+        super().__init__(id, parent_ids, create_datetime, node_name, cx, cy, cr, fill, href, stroke, stroke_width)

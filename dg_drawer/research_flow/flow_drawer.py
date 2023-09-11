@@ -3,7 +3,7 @@ from typing import List
 from copy import deepcopy
 import uuid
 
-from dg_drawer.research_flow.component.node import Node
+from dg_drawer.research_flow.component.node import Node, DummyNode
 from dg_drawer.research_flow.component.line import Line
 from dg_drawer.research_flow.component.frame import Frame
 from dg_drawer.research_flow.enums.color import ColorType
@@ -105,10 +105,17 @@ class FlowDrawer():
             node.cx = node_x
             # Set radius
             node.cr = node_r
-            # Set color
-            node.fill = ColorType.get_phase_node_by_index(color_index)
+
+            if type(node) is DummyNode:
+                node.fill = 'none'
+                node._stroke = 'none'
+                node._stroke_width = 0
+            else:
+                # Set color
+                node.fill = ColorType.get_phase_node_by_index(color_index)
+
             positioned_nodes.append(node)
-            # Update of initial X-coordinates
+                # Update of initial X-coordinates
             start_y += self._between_node_vertical_length
 
         return positioned_nodes
@@ -234,7 +241,7 @@ class FlowDrawer():
                         tmp_node = None
                         for edit_index in range(parent_pahse_index+1, index+1, 1):
                             if tmp_node is None:
-                                add_node = Node(
+                                add_node = DummyNode(
                                                 id=f'dummy:{uuid.uuid4()}',
                                                 parent_ids=[parent_node.id],
                                                 create_datetime=parent_node.create_datetime + addition_datetime,
@@ -242,7 +249,7 @@ class FlowDrawer():
                                             )
                                 tmp_node = add_node
                             elif tmp_node is not None and edit_index < index:
-                                add_node = Node(
+                                add_node = DummyNode(
                                                 id=f'dummy:{uuid.uuid4()}',
                                                 parent_ids=[tmp_node.id],
                                                 create_datetime=tmp_node.create_datetime + addition_datetime,
@@ -255,7 +262,7 @@ class FlowDrawer():
                                     if parent_id != parent_node.id:
                                         add_node_parent_ids.append(parent_id)
 
-                                add_node = Node(
+                                add_node = DummyNode(
                                                 id=node.id,
                                                 parent_ids=add_node_parent_ids,
                                                 create_datetime=node.create_datetime,

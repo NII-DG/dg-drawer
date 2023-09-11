@@ -245,7 +245,7 @@ class FlowDrawer():
                                                 id=f'dummy:{uuid.uuid4()}',
                                                 parent_ids=[parent_node.id],
                                                 create_datetime=parent_node.create_datetime + addition_datetime,
-                                                node_name='dummy node'
+                                                node_name=''
                                             )
                                 tmp_node = add_node
                             elif tmp_node is not None and edit_index < index:
@@ -253,7 +253,7 @@ class FlowDrawer():
                                                 id=f'dummy:{uuid.uuid4()}',
                                                 parent_ids=[tmp_node.id],
                                                 create_datetime=tmp_node.create_datetime + addition_datetime,
-                                                node_name='dummy node'
+                                                node_name=''
                                             )
                             else:
                                 add_node_parent_ids = []

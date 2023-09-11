@@ -122,7 +122,8 @@ class Node():
 
     @property
     def create_datetime(self):
-        return self.create_datetime
+        return self._create_datetime
+
 
     @property
     def node_name(self):

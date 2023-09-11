@@ -5,7 +5,7 @@ from dg_drawer.research_flow.component.node import Node
 from dg_drawer.research_flow.component.line import Line
 from dg_drawer.research_flow.component.frame import Frame
 from dg_drawer.research_flow.enums.color import ColorType
-from dg_drawer.research_flow import PhaseStatus, SubFlowStatus
+from dg_drawer.research_flow.research_flow_status import PhaseStatus, SubFlowStatus
 
 
 class FlowDrawer():
@@ -78,20 +78,6 @@ class FlowDrawer():
             )
             nodes.append(node)
         return nodes
-
-
-    def sort_phase_data_by_seq_number(self, data_list:List)->List:
-        """Sort phase data in ascending sequence number order.
-
-        Args:
-            data_list (list): [phase data list]
-
-        Returns:
-            list: [sorted phase data list]
-        """
-
-        sorted_list = sorted(data_list, key=lambda x: x.get('seq_number', float('inf')))
-        return sorted_list
 
     def set_node_location(self, nodes:List[Node], color_index:int, node_x:int, node_r:int=10)->List[Node]:
         """Set the coordinates in the SGV to each node in the node list.
@@ -229,6 +215,7 @@ class FlowDrawer():
 
         for index, nodes in enumerate(nodes_each_phase):
             if index == 0 or (len(nodes_each_phase[0])==1 and index==1):
+
                 # The most recent phase is sorted in ascending order of node ID.
                 sorted_nodes = self.sort_nodes_by_createdatetime(nodes)
                 sorted_nodes_each_phaselist.append(sorted_nodes)

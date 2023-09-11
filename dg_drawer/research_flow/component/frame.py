@@ -1,7 +1,7 @@
 from dg_drawer.research_flow.component.rectangle import Rectangle
 from dg_drawer.research_flow.enums.color import ColorType
 from typing import List
-from dg_drawer.research_flow import PhaseStatus, SubFlowStatus
+from dg_drawer.research_flow.research_flow_status import PhaseStatus
 
 class Frame():
     """Frame class

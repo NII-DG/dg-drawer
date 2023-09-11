@@ -1,5 +1,7 @@
 import math
 from typing import List
+from copy import deepcopy
+import uuid
 
 from dg_drawer.research_flow.component.node import Node
 from dg_drawer.research_flow.component.line import Line
@@ -161,8 +163,11 @@ class FlowDrawer():
         for phase_status in research_flow_status:
             nodes_each_phase.append(self.get_nodes(phase_status._sub_flow_data))
 
+        # fill dumpy node
+        filled_nodes_each_phase = self.fill_dummy_nodes_each_phase(nodes_each_phase)
+
         ## Sort the list of node information by phase
-        sorted_nodes_each_phase = self.sort_nodes_each_phase(nodes_each_phase)
+        sorted_nodes_each_phase = self.sort_nodes_each_phase(filled_nodes_each_phase)
 
         ## TODO : Rearrange the list of node information per phase
 
@@ -201,6 +206,100 @@ class FlowDrawer():
 
         # Mature and return as SVG data
         return self.pack_svg_tag(frame=frame_svg, line=line_svg, node=node_svg, node_label=node_label, height=svg_height, width=(phase_width*phase_num))
+
+    def fill_dummy_nodes_each_phase(self, nodes_each_phase:List[List[Node]])->List[List[Node]]:
+        # ノード間が隣接するフェーズではなく2つ以上空いている場合は、ダミーノードを埋める。
+        phase_num = len(nodes_each_phase)
+
+        copy_nodes_each_phase = deepcopy(nodes_each_phase)
+
+        for index in range(phase_num-1, 0, -1): # 後ろのフェーズから処理する
+            nodes = nodes_each_phase[index]
+            nodes_in_pre_phase = nodes_each_phase[index-1]
+            for node in nodes:
+                no_exist_ids = self.exist_nodes_in_phase_by_ids(nodes_in_pre_phase, node.parent_ids)
+                if len(no_exist_ids)<=0:
+                    continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。
+                else:
+                    # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
+                    # ２つ前のフェーズにある親ノードを特定する。
+                    for no_exist_id in no_exist_ids:
+                        parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, index-2, no_exist_id)
+                        if index == -1 or parent_node is None:
+                            raise Exception('Not Found Parent Nodes')
+
+                        diff_index_num = index - parent_pahse_index # フェーズの差
+                        addition_datetime = math.floor((node.create_datetime - parent_node.create_datetime) / diff_index_num) # 加算ようUnixTime
+
+                        tmp_node = None
+                        for edit_index in range(parent_pahse_index+1, index+1, 1):
+                            if tmp_node is None:
+                                add_node = Node(
+                                                id=f'dummy:{uuid.uuid4()}',
+                                                parent_ids=[parent_node.id],
+                                                create_datetime=parent_node.create_datetime + addition_datetime,
+                                                node_name='dummy node'
+                                            )
+                                tmp_node = add_node
+                            elif tmp_node is not None and edit_index < index:
+                                add_node = Node(
+                                                id=f'dummy:{uuid.uuid4()}',
+                                                parent_ids=[tmp_node.id],
+                                                create_datetime=tmp_node.create_datetime + addition_datetime,
+                                                node_name='dummy node'
+                                            )
+                            else:
+                                add_node = Node(
+                                                id=node.id,
+                                                parent_ids=[tmp_node.id],
+                                                create_datetime=node.create_datetime,
+                                                node_name=node.node_name
+                                            )
+                            for index, copy_node in enumerate(copy_nodes_each_phase[edit_index]):
+                                if copy_node.id == add_node.id:
+                                    copy_nodes_each_phase[edit_index].remove(copy_node)
+                            copy_nodes_each_phase[edit_index].append(add_node)
+        return copy_nodes_each_phase
+
+
+
+
+
+
+
+
+
+    def get_pahse_index_and_node_with_node_id(self, nodes_each_phase:List[List[Node]], start_last_index:int, id):
+
+        for index in (start_last_index, -1, -1):
+            nodes = nodes_each_phase[index]
+            for node in nodes:
+                if node.id == id:
+                    return index, node
+        return -1, None
+
+
+    def exist_nodes_in_phase_by_ids(self, nodes: List[Node], ids:List[str])->List[str]:
+        ids_num = len(ids)
+        exist_count = 0
+        exist_ids = []
+        for id in ids:
+            for node in nodes:
+                if node.id == id:
+                    exist_count += 1
+                    exist_ids.append(id)
+
+        if ids_num == exist_count:
+            return []
+        else:
+            diff_ids = set(ids) ^ set(exist_ids)
+            return list(diff_ids)
+
+
+
+
+
+
 
     def sort_nodes_each_phase(self, nodes_each_phase:List[List[Node]])->List[List[Node]]:
         """Sort_nodes_each_phase all nodes in the research flow history

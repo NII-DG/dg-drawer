@@ -233,7 +233,7 @@ class FlowDrawer():
                     for no_exist_id in no_exist_ids:
                         parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, index-2, no_exist_id)
                         if index == -1 or parent_node is None:
-                            raise Exception(f'Not Found Parent Nodes [start_last_index] : {start_last_index}, [no_exist_id] : {no_exist_id}')
+                            raise Exception(f'Not Found Parent Nodes [start_last_index] : {index-2}, [no_exist_id] : {no_exist_id}')
 
                         diff_index_num = index - parent_pahse_index # フェーズの差
                         addition_datetime = math.floor((node.create_datetime - parent_node.create_datetime) / diff_index_num) # 加算ようUnixTime

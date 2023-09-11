@@ -26,6 +26,14 @@ class ResearchFlowStatus():
 
     @classmethod
     def load_from_json(cls, json_path:str)->List[PhaseStatus]:
+        """Load a research flow status file (JSON) to obtain an instance
+
+        Args:
+            json_path (str): [Research flow status file path]
+
+        Returns:
+            List[PhaseStatus]: [Research Flow Status Instance]
+        """
 
         with open(json_path, 'r') as f:
             loaded_json = json.load(f)

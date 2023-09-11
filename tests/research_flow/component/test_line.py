@@ -8,25 +8,23 @@ class TestLabel(TestCase):
     # test exec : python -m unittest tests.research_flow.component.test_line
 
     def test_constructor(self):
-        p_id = 100
+        p_id = '100'
         p_parent_ids = []
         p_start_time = 1234
         p_node_name = 'node A'
-        p_status = 'complete'
         p_cx = 11
         p_cy = 12
         p_cr = 13
-        p_node = Node(id=p_id, parent_ids=p_parent_ids, start_time=p_start_time, node_name=p_node_name, cx=p_cx, cy=p_cy, cr=p_cr, status=p_status)
+        p_node = Node(id=p_id, parent_ids=p_parent_ids, create_datetime=p_start_time, node_name=p_node_name, cx=p_cx, cy=p_cy, cr=p_cr)
 
-        c_id = 200
-        c_parent_ids = [100,101,102]
+        c_id = '200'
+        c_parent_ids = ['100','101','102']
         c_start_time = 1234
         c_node_name = 'node A'
-        c_status = 'complete'
         c_cx = 21
         c_cy = 22
         c_cr = 23
-        c_node = Node(id=c_id, parent_ids=c_parent_ids, start_time=c_start_time, node_name=c_node_name,cx=c_cx, cy=c_cy, cr=c_cr, status=c_status)
+        c_node = Node(id=c_id, parent_ids=c_parent_ids, create_datetime=c_start_time, node_name=c_node_name,cx=c_cx, cy=c_cy, cr=c_cr)
 
         stroke = 'red'
         stroke_width = 10
@@ -41,25 +39,23 @@ class TestLabel(TestCase):
         self.assertEqual(stroke_width, line._stroke_width)
 
     def test_constructor_err(self):
-        p_id = 100
+        p_id = '100'
         p_parent_ids = []
         p_start_time = 1234
         p_node_name = 'node A'
-        p_status = 'complete'
         p_cx = 11
         p_cy = 12
         p_cr = 13
-        p_node = Node(id=p_id, parent_ids=p_parent_ids, start_time=p_start_time, node_name=p_node_name, cx=p_cx, cy=p_cy, cr=p_cr, status=p_status)
+        p_node = Node(id=p_id, parent_ids=p_parent_ids, create_datetime=p_start_time, node_name=p_node_name, cx=p_cx, cy=p_cy, cr=p_cr)
 
-        c_id = 200
-        c_parent_ids = [101,102,103]
+        c_id = '200'
+        c_parent_ids = ['101','102','103']
         c_start_time = 1234
         c_node_name = 'node A'
-        c_status = 'complete'
         c_cx = 21
         c_cy = 22
         c_cr = 23
-        c_node = Node(id=c_id, parent_ids=c_parent_ids, start_time=c_start_time, node_name=c_node_name,cx=c_cx, cy=c_cy, cr=c_cr, status=c_status)
+        c_node = Node(id=c_id, parent_ids=c_parent_ids, create_datetime=c_start_time, node_name=c_node_name,cx=c_cx, cy=c_cy, cr=c_cr)
 
         stroke = 'red'
         stroke_width = 10
@@ -71,25 +67,23 @@ class TestLabel(TestCase):
 
 
     def test_generate_svg_component(self):
-        p_id = 101
+        p_id = '101'
         p_parent_ids = []
         p_start_time = 1234
         p_node_name = 'node A'
-        p_status = 'complete'
         p_cx = 11
         p_cy = 12
         p_cr = 13
-        p_node = Node(id=p_id, parent_ids=p_parent_ids, start_time=p_start_time, node_name=p_node_name, cx=p_cx, cy=p_cy, cr=p_cr, status=p_status)
+        p_node = Node(id=p_id, parent_ids=p_parent_ids, create_datetime=p_start_time, node_name=p_node_name, cx=p_cx, cy=p_cy, cr=p_cr)
 
-        c_id = 200
-        c_parent_ids = [101,102,103]
+        c_id = '200'
+        c_parent_ids = ['101','102','103']
         c_start_time = 1234
         c_node_name = 'node A'
-        c_status = 'complete'
         c_cx = 21
         c_cy = 22
         c_cr = 23
-        c_node = Node(id=c_id, parent_ids=c_parent_ids, start_time=c_start_time, node_name=c_node_name,cx=c_cx, cy=c_cy, cr=c_cr, status=c_status)
+        c_node = Node(id=c_id, parent_ids=c_parent_ids, create_datetime=c_start_time, node_name=c_node_name,cx=c_cx, cy=c_cy, cr=c_cr)
 
         stroke = 'red'
         stroke_width = 10

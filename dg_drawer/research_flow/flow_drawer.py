@@ -290,8 +290,8 @@ class FlowDrawer():
                                 # for parent_id in node.parent_ids:
                                 #     if parent_id != parent_node.id:
                                 #         add_node_parent_ids.append(parent_id)
-                                for remove_id in no_exist_ids:
-                                    add_node_parent_ids.remove(remove_id)
+                                # for remove_id in no_exist_ids:
+                                #     add_node_parent_ids.remove(remove_id)
 
                                 print(f'add_node_parent_ids : {add_node_parent_ids}')
 

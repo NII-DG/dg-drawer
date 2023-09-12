@@ -241,6 +241,7 @@ class FlowDrawer():
                     print(f'index : {index}')
                     # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
                     # ２つ前のフェーズにある親ノードを特定する。
+                    parant_ids_stock_last_edit_node = []
                     for no_exist_id in no_exist_ids:
                         parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, index-2, no_exist_id)
 
@@ -259,29 +260,37 @@ class FlowDrawer():
                             print(f'edit_index : {edit_index}')
                             if tmp_node is None:
                                 print(f'first Edit')
+                                add_id = f'dummy:{uuid.uuid4()}'
                                 add_node = DummyNode(
-                                                id=f'dummy:{uuid.uuid4()}',
+                                                id=add_id,
                                                 parent_ids=[parent_node.id],
                                                 create_datetime=parent_node.create_datetime + addition_datetime,
                                                 node_name=''
                                             )
                                 tmp_node = add_node
+                                if (edit_index+1) == index:
+                                    parant_ids_stock_last_edit_node.append(add_id)
                             elif tmp_node is not None and edit_index < index:
                                 print(f'middle edit')
+                                add_id = f'dummy:{uuid.uuid4()}'
                                 add_node = DummyNode(
-                                                id=f'dummy:{uuid.uuid4()}',
+                                                id=add_id,
                                                 parent_ids=[tmp_node.id],
                                                 create_datetime=tmp_node.create_datetime + addition_datetime,
                                                 node_name=''
                                             )
                                 tmp_node = add_node
+                                if (edit_index+1) == index:
+                                    parant_ids_stock_last_edit_node.append(add_id)
                             else:
                                 print(f'last edit')
                                 add_node_parent_ids = []
-                                add_node_parent_ids.append(tmp_node.id)
+                                add_node_parent_ids.extend(parant_ids_stock_last_edit_node)
+
                                 for parent_id in node.parent_ids:
                                     if parent_id != parent_node.id:
                                         add_node_parent_ids.append(parent_id)
+
                                 print(f'add_node_parent_ids : {add_node_parent_ids}')
 
                                 add_node = Node(

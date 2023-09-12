@@ -255,7 +255,10 @@ class FlowDrawer():
 
                         tmp_node = None
                         for edit_index in range(parent_pahse_index+1, index+1, 1):
+                            print('=========for edit_index in range(parent_pahse_index+1, index+1, 1):==========')
+                            print(f'edit_index : {edit_index}')
                             if tmp_node is None:
+                                print(f'first Edit')
                                 add_node = DummyNode(
                                                 id=f'dummy:{uuid.uuid4()}',
                                                 parent_ids=[parent_node.id],
@@ -264,6 +267,7 @@ class FlowDrawer():
                                             )
                                 tmp_node = add_node
                             elif tmp_node is not None and edit_index < index:
+                                print(f'middle edit')
                                 add_node = DummyNode(
                                                 id=f'dummy:{uuid.uuid4()}',
                                                 parent_ids=[tmp_node.id],
@@ -271,6 +275,7 @@ class FlowDrawer():
                                                 node_name=''
                                             )
                             else:
+                                print(f'last edit')
                                 add_node_parent_ids = []
                                 add_node_parent_ids.append(tmp_node.id)
                                 for parent_id in node.parent_ids:

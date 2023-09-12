@@ -240,6 +240,9 @@ class FlowDrawer():
                 if len(no_exist_ids)<=0:
                     continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。
                 else:
+                    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                    print(f'index : {index}')
+                    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                     # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
                     # ２つ前のフェーズにある親ノードを特定する。
                     for no_exist_id in no_exist_ids:

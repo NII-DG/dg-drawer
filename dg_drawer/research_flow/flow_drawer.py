@@ -221,13 +221,24 @@ class FlowDrawer():
         copy_nodes_each_phase = deepcopy(nodes_each_phase)
 
         for index in range(phase_num-1, 0, -1): # 後ろのフェーズから処理する
+            print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+            print(f'index : {index}')
             nodes = nodes_each_phase[index]
             nodes_in_pre_phase = nodes_each_phase[index-1]
             for node in nodes:
+                print('========================================')
+                print(f'node.id: {node.id}')
+                print(f'node.node_name: {node.node_name}')
+                print(f'node.parent_ids: {node.parent_ids}')
+                print(f'node.create_datetime: {node.create_datetime}')
                 no_exist_ids = self.exist_nodes_in_phase_by_ids(nodes_in_pre_phase, node.parent_ids)
+                print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+                print(f'no_exist_ids: {no_exist_ids}')
                 if len(no_exist_ids)<=0:
                     continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。
                 else:
+                    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                    print(f'index : {index}')
                     # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
                     # ２つ前のフェーズにある親ノードを特定する。
                     parant_ids_stock_last_edit_node = []
@@ -237,12 +248,18 @@ class FlowDrawer():
                         if index == -1 or parent_node is None:
                             raise Exception(f'Not Found Parent Nodes [start_last_index] : {index-2}, [no_exist_id] : {no_exist_id}')
 
+                        print('##################################')
+                        print(f'parent_pahse_index : {parent_pahse_index}, parent_node.id : {parent_node.id}')
+
                         diff_index_num = index - parent_pahse_index # フェーズの差
                         addition_datetime = math.floor((node.create_datetime - parent_node.create_datetime) / diff_index_num) # 加算ようUnixTime
 
                         tmp_node = None
                         for edit_index in range(parent_pahse_index+1, index+1, 1):
+                            print('=========for edit_index in range(parent_pahse_index+1, index+1, 1):==========')
+                            print(f'edit_index : {edit_index}')
                             if tmp_node is None:
+                                print(f'first Edit')
                                 add_id = f'dummy:{uuid.uuid4()}'
                                 add_node = DummyNode(
                                                 id=add_id,
@@ -254,6 +271,7 @@ class FlowDrawer():
                                 if (edit_index+1) == index:
                                     parant_ids_stock_last_edit_node.append(add_id)
                             elif tmp_node is not None and edit_index < index:
+                                print(f'middle edit')
                                 add_id = f'dummy:{uuid.uuid4()}'
                                 add_node = DummyNode(
                                                 id=add_id,
@@ -265,8 +283,17 @@ class FlowDrawer():
                                 if (edit_index+1) == index:
                                     parant_ids_stock_last_edit_node.append(add_id)
                             else:
+                                print(f'last edit')
                                 add_node_parent_ids = []
                                 add_node_parent_ids.extend(parant_ids_stock_last_edit_node)
+
+                                # for parent_id in node.parent_ids:
+                                #     if parent_id != parent_node.id:
+                                #         add_node_parent_ids.append(parent_id)
+                                # for remove_id in no_exist_ids:
+                                #     add_node_parent_ids.remove(remove_id)
+
+                                print(f'add_node_parent_ids : {add_node_parent_ids}')
 
                                 add_node = Node(
                                                 id=node.id,
@@ -282,9 +309,12 @@ class FlowDrawer():
         return copy_nodes_each_phase
 
     def get_pahse_index_and_node_with_node_id(self, nodes_each_phase:List[List[Node]], start_last_index:int, id):
+        #print('==================get_pahse_index_and_node_with_node_id()========================')
         for index in range(start_last_index, -1, -1):
+            #print(f'index : {index}')
             nodes = nodes_each_phase[index]
             for node in nodes:
+                #print(f'id : {id} vs node.id : {node.id}')
                 if node.id == id:
                     return index, node
         return -1, None

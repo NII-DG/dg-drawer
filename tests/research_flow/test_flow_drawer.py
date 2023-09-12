@@ -1,139 +1,149 @@
 from unittest import TestCase
-from dg_drawer.research_flow.component.node import Node
-from dg_drawer.research_flow.flow_drawer import FlowDrawer
+from dg_drawer.research_flow import FlowDrawer
+from dg_drawer.research_flow import PhaseStatus, SubFlowStatus
 
 class TestFlowDrawer(TestCase):
     # test exec : python -m unittest tests.research_flow.test_flow_drawer
 
-    def test_sort_dicts_by_seq_number(self):
-        data_list = [
-            {'seq_number': 3},
-            {'seq_number': 1},
-            {'seq_number': 2}
-        ]
-        f = FlowDrawer(raw_data={'phase_data':[]})
-        sorted_data_list = f.sort_phase_data_by_seq_number(data_list)
-
-        self.assertEqual(data_list[1]['seq_number'], sorted_data_list[0]['seq_number'])
-        self.assertEqual(data_list[2]['seq_number'], sorted_data_list[1]['seq_number'])
-        self.assertEqual(data_list[0]['seq_number'], sorted_data_list[2]['seq_number'])
-
     def test_draw(self):
-        sample_json = {
-        'phase_data': [
-            {
-                'seq_number' : 1,
-                'phase_name' : 'フェーズA',
-                'nodes' : [
-                    {
-                        'node_id' : 1,
-                        'node_name' : 'node_A_1',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [],
-                        'start_time' : 1672498800
-                    }
-                ]
-            },
-            {
-                'seq_number' : 2,
-                'phase_name' : 'フェーズB',
-                'nodes' : [
-                    {
-                        'node_id' : 2,
-                        'node_name' : 'node_B_2',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [1],
-                        'start_time' : 1675177200
-                    },
-                    {
-                        'node_id' : 3,
-                        'node_name' : 'node_B_3',
-                        'status' : 'working',
-                        'link' : 'https://www.google.com/',
-                        'parent_ids' : [1],
-                        'start_time' : 1675263600
-                    },
-                    {
-                        'node_id' : 4,
-                        'node_name' : 'node_B_4',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [1],
-                        'start_time' : 1675350000
-                    },
-                    {
-                        'node_id' : 5,
-                        'node_name' : 'node_B_5',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [1],
-                        'start_time' : 1675522800
-                    },
-                    {
-                        'node_id' : 6,
-                        'node_name' : 'node_B_6',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [1],
-                        'start_time' : 1675609200
-                    },
-                ]
-            },
-            {
-                'seq_number' : 3,
-                'phase_name' : 'フェーズC',
-                'nodes' : [
-                    {
-                        'node_id' : 7,
-                        'node_name' : 'node_C_7',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [2],
-                        'start_time' : 1677596400
-                    },
-                    {
-                        'node_id' : 8,
-                        'node_name' : 'node_C_8',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [4, 5],
-                        'start_time' : 1677682800
-                    },
-                    {
-                        'node_id' : 9,
-                        'node_name' : 'node_C_9',
-                        'status' : 'working',
-                        'link' : 'https://www.google.com/',
-                        'parent_ids' : [6],
-                        'start_time' : 1677769200
-                    },
-                    {
-                        'node_id' : 11,
-                        'node_name' : 'node_C_11',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [2, 3],
-                        'start_time' : 1677596400
-                    },
-                ]
-            },
-            {
-                'seq_number' : 4,
-                'phase_name' : 'フェーズD',
-                'nodes' : [
-                    {
-                        'node_id' : 10,
-                        'node_name' : 'node_D_10',
-                        'status' : 'complete',
-                        'link' : '',
-                        'parent_ids' : [7],
-                        'start_time' : 1677769200
-                    }
-                ]
-            },
-        ]
-    }
-        fd = FlowDrawer(raw_data=sample_json)
+
+        node_A_1 = SubFlowStatus(
+            id='1',
+            name='node_A_1',
+            link='',
+            parent_ids=[],
+            create_datetime=1672498800
+        )
+
+        phase_A = PhaseStatus(
+            seq_number=1,
+            name='phase_A',
+            sub_flow_data=[node_A_1]
+        )
+
+        node_B_2 = SubFlowStatus(
+                    id='2',
+                    name='node_B_2',
+                    link='',
+                    parent_ids=['1'],
+                    create_datetime= 1675177200
+        )
+
+        node_B_3 = SubFlowStatus(
+                    id='3',
+                    name='node_B_3',
+                    link='https://www.google.com/',
+                    parent_ids=['1'],
+                    create_datetime= 1675263600
+        )
+
+        node_B_4 = SubFlowStatus(
+                    id='4',
+                    name='node_B_4',
+                    link='',
+                    parent_ids=['1'],
+                    create_datetime= 1675350000
+        )
+
+        node_B_5 = SubFlowStatus(
+                    id='5',
+                    name='node_B_5',
+                    link='',
+                    parent_ids=['1'],
+                    create_datetime= 1675522800
+        )
+
+        node_B_6 = SubFlowStatus(
+                    id='6',
+                    name='node_B_6',
+                    link='',
+                    parent_ids=['1'],
+                    create_datetime= 1675609200
+        )
+
+        phase_B = PhaseStatus(
+            seq_number=2,
+            name='phase_B',
+            sub_flow_data=[node_B_2, node_B_3, node_B_4, node_B_5, node_B_6]
+        )
+
+        node_C_7 = SubFlowStatus(
+                    id='7',
+                    name='node_C_7',
+                    link='',
+                    parent_ids=['2'],
+                    create_datetime= 1677596400
+        )
+
+        node_C_8 = SubFlowStatus(
+                    id='8',
+                    name='node_C_8',
+                    link='',
+                    parent_ids=['4', '5'],
+                    create_datetime= 1677682800
+        )
+
+        node_C_9 = SubFlowStatus(
+                    id='9',
+                    name='node_C_9',
+                    link='https://www.google.com/',
+                    parent_ids=['6'],
+                    create_datetime= 1677769200
+        )
+
+        node_C_11 = SubFlowStatus(
+                    id='11',
+                    name='node_C_11',
+                    link='',
+                    parent_ids=['2', '3'],
+                    create_datetime= 1677596400
+        )
+
+        node_C_14 = SubFlowStatus(
+                    id='14',
+                    name='node_C_14',
+                    link='',
+                    parent_ids=['2', '3', '1'],
+                    create_datetime= 1677596401
+        )
+
+        phase_C = PhaseStatus(
+            seq_number=3,
+            name='phase_C',
+            sub_flow_data=[node_C_7, node_C_8, node_C_9, node_C_11, node_C_14]
+        )
+
+
+        node_D_10 = SubFlowStatus(
+                    id='10',
+                    name='node_D_10',
+                    link='',
+                    parent_ids=['7'],
+                    create_datetime= 1677769200
+        )
+
+        node_D_12 = SubFlowStatus(
+                    id='12',
+                    name='node_D_12',
+                    link='',
+                    parent_ids=['5', '9'],
+                    create_datetime= 1677769201
+        )
+
+        node_D_13 = SubFlowStatus(
+                    id='13',
+                    name='node_D_13',
+                    link='https://www.google.com/',
+                    parent_ids=['9', '2', '4', '1'],
+                    create_datetime= 1677769201
+        )
+
+        phase_D = PhaseStatus(
+            seq_number=4,
+            name='phase_D',
+            sub_flow_data=[node_D_10,node_D_12,node_D_13]
+        )
+
+        research_flow_status = [phase_A, phase_B, phase_C, phase_D]
+        fd = FlowDrawer(research_flow_status=research_flow_status)
         svg = fd.draw()

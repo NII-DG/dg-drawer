@@ -5,7 +5,7 @@ class Node():
     """Node class
     """
 
-    def __init__(self, id:int, parent_ids:List[int], start_time:int, node_name:str, status:str,cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=2) -> None:
+    def __init__(self, id:str, parent_ids:List[str], create_datetime:int, node_name:str,cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=1) -> None:
         """Node constructor
 
         Args:
@@ -26,10 +26,9 @@ class Node():
             href (str, optional): [link]. Defaults to "".
         """
         self._id = id
-        self._start_time = start_time
+        self._create_datetime = create_datetime
         self._parent_ids = sorted(parent_ids)
         self._node_name = node_name
-        self._status = status
         self._cx = cx
         self._cy = cy
         self._cr = cr
@@ -122,13 +121,15 @@ class Node():
         self._parent_ids = parent_ids
 
     @property
-    def start_time(self):
-        return self._start_time
+    def create_datetime(self):
+        return self._create_datetime
+
 
     @property
     def node_name(self):
         return self._node_name
 
-    @property
-    def status(self):
-        return self._status
+class DummyNode(Node):
+
+    def __init__(self, id:str, parent_ids:List[str], create_datetime:int, node_name:str, cx:int=0, cy:int=0, cr:int=0, fill:str="", href:str="", stroke:str="black", stroke_width:int=1) -> None:
+        super().__init__(id, parent_ids, create_datetime, node_name, cx, cy, cr, fill, href, stroke, stroke_width)

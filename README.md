@@ -27,10 +27,7 @@ Drawing module for NII data governance
 
 ## Usage
 
- * [Research Flow History](./doc/ResearchFlowHistory.md)
-
-### Research Flow History
-
+ * [Research Flow Activity](./doc/ResearchFlowActivity.md)
 
 
 ## Branch and Release Management

@@ -221,6 +221,9 @@ class FlowDrawer():
         copy_nodes_each_phase = deepcopy(nodes_each_phase)
 
         for index in range(phase_num-1, 0, -1): # 後ろのフェーズから処理する
+            print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+            print(f'index : {index}')
+            print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
             nodes = nodes_each_phase[index]
             nodes_in_pre_phase = nodes_each_phase[index-1]
             for node in nodes:
@@ -231,6 +234,9 @@ class FlowDrawer():
                 print(f'node.create_datetime: {node.create_datetime}')
                 print('========================================')
                 no_exist_ids = self.exist_nodes_in_phase_by_ids(nodes_in_pre_phase, node.parent_ids)
+                print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+                print(f'no_exist_ids: {no_exist_ids}')
+                print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
                 if len(no_exist_ids)<=0:
                     continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。
                 else:

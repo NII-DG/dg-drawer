@@ -224,6 +224,12 @@ class FlowDrawer():
             nodes = nodes_each_phase[index]
             nodes_in_pre_phase = nodes_each_phase[index-1]
             for node in nodes:
+                print('========================================')
+                print(f'node.id: {node.id}')
+                print(f'node.node_name: {node.node_name}')
+                print(f'node.parent_ids: {node.parent_ids}')
+                print(f'node.create_datetime: {node.create_datetime}')
+                print('========================================')
                 no_exist_ids = self.exist_nodes_in_phase_by_ids(nodes_in_pre_phase, node.parent_ids)
                 if len(no_exist_ids)<=0:
                     continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。

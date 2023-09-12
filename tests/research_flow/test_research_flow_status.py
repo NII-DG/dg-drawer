@@ -32,7 +32,7 @@ class TestResearchFlowStatus(TestCase):
         self.assertEqual(2, ex._seq_number)
         self.assertEqual("experiments", ex._name)
         ex_sf = ex._sub_flow_data
-        self.assertEqual(2, len(ex_sf))
+        self.assertEqual(3, len(ex_sf))
 
         self.assertEqual("ex_sf_1", ex_sf[0]._id)
         self.assertEqual("ex_sf_1 name", ex_sf[0]._name)
@@ -46,15 +46,28 @@ class TestResearchFlowStatus(TestCase):
         self.assertEqual(1, len(ex_sf[1]._parent_ids))
         self.assertEqual(11, ex_sf[1]._create_datetime)
 
+        self.assertEqual("ex_sf_3", ex_sf[2]._id)
+        self.assertEqual("ex_sf_3 name", ex_sf[2]._name)
+        self.assertEqual("ex_sf_3 link", ex_sf[2]._link)
+        self.assertEqual(1, len(ex_sf[2]._parent_ids))
+        self.assertEqual(12, ex_sf[2]._create_datetime)
+
 
         ## paper_writing
         pw = rfs[2]
         self.assertEqual(3, pw._seq_number)
         self.assertEqual("paper_writing", pw._name)
         pw_sf = pw._sub_flow_data
-        self.assertEqual(1, len(pw_sf))
+        self.assertEqual(2, len(pw_sf))
+
         self.assertEqual("pw_sf_1", pw_sf[0]._id)
         self.assertEqual("pw_sf_1 name", pw_sf[0]._name)
         self.assertEqual("pw_sf_1 link", pw_sf[0]._link)
         self.assertEqual(2, len(pw_sf[0]._parent_ids))
         self.assertEqual(100, pw_sf[0]._create_datetime)
+
+        self.assertEqual("pw_sf_2", pw_sf[1]._id)
+        self.assertEqual("pw_sf_2 name", pw_sf[1]._name)
+        self.assertEqual("pw_sf_2 link", pw_sf[1]._link)
+        self.assertEqual(1, len(pw_sf[1]._parent_ids))
+        self.assertEqual(101, pw_sf[1]._create_datetime)

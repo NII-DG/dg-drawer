@@ -274,6 +274,7 @@ class FlowDrawer():
                                                 create_datetime=tmp_node.create_datetime + addition_datetime,
                                                 node_name=''
                                             )
+                                tmp_node = add_node
                             else:
                                 print(f'last edit')
                                 add_node_parent_ids = []
@@ -281,6 +282,7 @@ class FlowDrawer():
                                 for parent_id in node.parent_ids:
                                     if parent_id != parent_node.id:
                                         add_node_parent_ids.append(parent_id)
+                                print(f'add_node_parent_ids : {add_node_parent_ids}')
 
                                 add_node = Node(
                                                 id=node.id,

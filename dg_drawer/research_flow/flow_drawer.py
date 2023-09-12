@@ -215,21 +215,21 @@ class FlowDrawer():
         return self.pack_svg_tag(frame=frame_svg, line=line_svg, node=node_svg, node_label=node_label, height=svg_height, width=(phase_width*phase_num))
 
     def fill_dummy_nodes_each_phase(self, nodes_each_phase:List[List[Node]])->List[List[Node]]:
-        # ノード間が隣接するフェーズではなく2つ以上空いている場合は、ダミーノードを埋める。
+        # If there are two or more open spaces between nodes instead of adjacent phases, fill in dummy nodes.
         phase_num = len(nodes_each_phase)
 
         copy_nodes_each_phase = deepcopy(nodes_each_phase)
 
-        for index in range(phase_num-1, 0, -1): # 後ろのフェーズから処理する
+        for index in range(phase_num-1, 0, -1): # Process from the back phase.
             nodes = nodes_each_phase[index]
             nodes_in_pre_phase = nodes_each_phase[index-1]
             for node in nodes:
                 no_exist_ids = self.exist_nodes_in_phase_by_ids(nodes_in_pre_phase, node.parent_ids)
                 if len(no_exist_ids)<=0:
-                    continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。
+                    continue # All of the parent IDs of the target Node are included in the previous phase.
                 else:
-                    # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
-                    # ２つ前のフェーズにある親ノードを特定する。
+                    # At least one of the parent IDs of the target Node is included in the two previous phases
+                    # Identify the parent node in the two previous phases.
                     parant_ids_stock_last_edit_node = []
                     for no_exist_id in no_exist_ids:
                         parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, index-2, no_exist_id)
@@ -237,8 +237,8 @@ class FlowDrawer():
                         if index == -1 or parent_node is None:
                             raise Exception(f'Not Found Parent Nodes [start_last_index] : {index-2}, [no_exist_id] : {no_exist_id}')
 
-                        diff_index_num = index - parent_pahse_index # フェーズの差
-                        addition_datetime = math.floor((node.create_datetime - parent_node.create_datetime) / diff_index_num) # 加算ようUnixTime
+                        diff_index_num = index - parent_pahse_index # Difference in number of phases
+                        addition_datetime = math.floor((node.create_datetime - parent_node.create_datetime) / diff_index_num) # UnixTime for addition
 
                         tmp_node = None
                         for edit_index in range(parent_pahse_index+1, index+1, 1):
@@ -351,13 +351,13 @@ class FlowDrawer():
         """
         sorted_nodes = []
 
-        grouped_node = [] # グループNodeリスト
+        grouped_node = [] # group node list
         for pre_phase_node in pre_phase_nodes:
-            pre_phase_node_id = pre_phase_node.id # 前フェーズのNodeID
+            pre_phase_node_id = pre_phase_node.id # NodeID of previous phase
             grouping_node = []
             for target_node in target_nodes:
                 if pre_phase_node_id in target_node.parent_ids and not self.is_contain_id_in_grouped_node(grouped_node, target_node.id):
-                    # 前フェーズのIDが次のフェーズ親IDリストに含まれ、かつグループNodeリストに既にターゲットNodeが含まれいない場合追加
+                    # Added if the ID of the previous phase is included in the next phase parent ID list and the group node list does not already contain the target node
                     grouping_node.append(target_node)
             grouped_node.append(grouping_node)
 

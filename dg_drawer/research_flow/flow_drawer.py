@@ -283,7 +283,8 @@ class FlowDrawer():
                                                 create_datetime=node.create_datetime,
                                                 node_name=node.node_name
                                             )
-                            for index, copy_node in enumerate(copy_nodes_each_phase[edit_index]):
+
+                            for copy_node in copy_nodes_each_phase[edit_index]:
                                 if copy_node.id == add_node.id:
                                     copy_nodes_each_phase[edit_index].remove(copy_node)
                             copy_nodes_each_phase[edit_index].append(add_node)

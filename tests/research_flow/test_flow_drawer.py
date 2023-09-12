@@ -8,12 +8,12 @@ class TestFlowDrawer(TestCase):
     def test_draw(self):
 
         node_A_1 = SubFlowStatus(
-                    id='1',
-                    name='node_A_1',
-                    link='',
-                    parent_ids=[],
-                    create_datetime=1672498800
-                )
+            id='1',
+            name='node_A_1',
+            link='',
+            parent_ids=[],
+            create_datetime=1672498800
+        )
 
         phase_A = PhaseStatus(
             seq_number=1,
@@ -99,10 +99,18 @@ class TestFlowDrawer(TestCase):
                     create_datetime= 1677596400
         )
 
+        node_C_14 = SubFlowStatus(
+                    id='14',
+                    name='node_C_14',
+                    link='',
+                    parent_ids=['2', '3', '1'],
+                    create_datetime= 1677596401
+        )
+
         phase_C = PhaseStatus(
             seq_number=3,
             name='phase_C',
-            sub_flow_data=[node_C_7, node_C_8, node_C_9, node_C_11]
+            sub_flow_data=[node_C_7, node_C_8, node_C_9, node_C_11, node_C_14]
         )
 
 
@@ -114,10 +122,26 @@ class TestFlowDrawer(TestCase):
                     create_datetime= 1677769200
         )
 
+        node_D_12 = SubFlowStatus(
+                    id='12',
+                    name='node_D_12',
+                    link='',
+                    parent_ids=['5', '9'],
+                    create_datetime= 1677769201
+        )
+
+        node_D_13 = SubFlowStatus(
+                    id='13',
+                    name='node_D_13',
+                    link='https://www.google.com/',
+                    parent_ids=['9', '2', '4', '1'],
+                    create_datetime= 1677769201
+        )
+
         phase_D = PhaseStatus(
             seq_number=4,
             name='phase_D',
-            sub_flow_data=[node_D_10]
+            sub_flow_data=[node_D_10,node_D_12,node_D_13]
         )
 
         research_flow_status = [phase_A, phase_B, phase_C, phase_D]

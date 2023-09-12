@@ -292,7 +292,7 @@ class FlowDrawer():
 
     def get_pahse_index_and_node_with_node_id(self, nodes_each_phase:List[List[Node]], start_last_index:int, id):
         print('==================get_pahse_index_and_node_with_node_id()========================')
-        for index in (start_last_index, -1, -1):
+        for index in range(start_last_index, -1, -1):
             print(f'index : {index}')
             nodes = nodes_each_phase[index]
             for node in nodes:

@@ -279,7 +279,8 @@ class FlowDrawer():
                                                 id=node.id,
                                                 parent_ids=add_node_parent_ids,
                                                 create_datetime=node.create_datetime,
-                                                node_name=node.node_name
+                                                node_name=node.node_name,
+                                                href=node.href
                                             )
 
                             for copy_node in copy_nodes_each_phase[edit_index]:

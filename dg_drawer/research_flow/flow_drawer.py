@@ -223,7 +223,6 @@ class FlowDrawer():
         for index in range(phase_num-1, 0, -1): # 後ろのフェーズから処理する
             print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
             print(f'index : {index}')
-            print('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
             nodes = nodes_each_phase[index]
             nodes_in_pre_phase = nodes_each_phase[index-1]
             for node in nodes:
@@ -232,21 +231,20 @@ class FlowDrawer():
                 print(f'node.node_name: {node.node_name}')
                 print(f'node.parent_ids: {node.parent_ids}')
                 print(f'node.create_datetime: {node.create_datetime}')
-                print('========================================')
                 no_exist_ids = self.exist_nodes_in_phase_by_ids(nodes_in_pre_phase, node.parent_ids)
                 print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
                 print(f'no_exist_ids: {no_exist_ids}')
-                print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
                 if len(no_exist_ids)<=0:
                     continue # 標的Nodeの親IDの全てが前のフェーズに含まれている。
                 else:
                     print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                     print(f'index : {index}')
-                    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
                     # 標的Nodeの親IDの内、少なくとも１以上が２つ前のフェーズに含まれる
                     # ２つ前のフェーズにある親ノードを特定する。
                     for no_exist_id in no_exist_ids:
                         parent_pahse_index, parent_node = self.get_pahse_index_and_node_with_node_id(nodes_each_phase, index-2, no_exist_id)
+                        print('##################################')
+                        print(f'parent_pahse_index : {parent_pahse_index}, parent_node : {parent_node}')
                         if index == -1 or parent_node is None:
                             raise Exception(f'Not Found Parent Nodes [start_last_index] : {index-2}, [no_exist_id] : {no_exist_id}')
 
@@ -291,12 +289,12 @@ class FlowDrawer():
         return copy_nodes_each_phase
 
     def get_pahse_index_and_node_with_node_id(self, nodes_each_phase:List[List[Node]], start_last_index:int, id):
-        print('==================get_pahse_index_and_node_with_node_id()========================')
+        #print('==================get_pahse_index_and_node_with_node_id()========================')
         for index in range(start_last_index, -1, -1):
-            print(f'index : {index}')
+            #print(f'index : {index}')
             nodes = nodes_each_phase[index]
             for node in nodes:
-                print(f'id : {id} vs node.id : {node.id}')
+                #print(f'id : {id} vs node.id : {node.id}')
                 if node.id == id:
                     return index, node
         return -1, None

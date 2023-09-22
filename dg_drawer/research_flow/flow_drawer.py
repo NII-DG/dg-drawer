@@ -179,7 +179,7 @@ class FlowDrawer():
         ## TODO : Rearrange the list of node information per phase
 
         # Add drawing position information to the node information for each phase.
-        positioned_nodes_each_phase = []
+        positioned_nodes_each_phase:List[List[Node]] = []
         ## Calculate initial X-coordinates.
         start_x = math.floor(self._whole_max_width / phase_num / 2)
 

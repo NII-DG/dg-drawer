@@ -39,7 +39,7 @@ class Node():
         self._stroke_width = stroke_width
 
 
-    def generate_svg_component(self, target:str='_blank')->str:
+    def generate_svg_component(self, target:str='_self')->str:
         """Generation of SVG node components.
 
         Returns:

@@ -3,9 +3,10 @@ from typing import List
 import json
 
 class SubFlowStatus():
-    def __init__(self, id:str, name:str, link:str, parent_ids:List[str], create_datetime:int) -> None:
+    def __init__(self, id:str, name:str, data_dir, link:str, parent_ids:List[str], create_datetime:int) -> None:
         self._id = id
         self._name = name
+        self._data_dir = data_dir
         self._link = link
         self._parent_ids = parent_ids
         self._create_datetime = create_datetime
@@ -19,7 +20,7 @@ class PhaseStatus():
         self._sub_flow_data = sub_flow_data
 
     def update_name(self, name:str):
-         self._name = name
+        self._name = name
 
 class ResearchFlowStatus():
 
@@ -48,11 +49,12 @@ class ResearchFlowStatus():
             sub_flow_data = []
             for sub_flow in phase['sub_flow_data']:
                 sfs = SubFlowStatus(
-                        sub_flow['id'],
-                        sub_flow['name'],
-                        sub_flow['link'],
-                        sub_flow['parent_ids'],
-                        sub_flow['create_datetime']
+                        id=sub_flow['id'],
+                        name=sub_flow['name'],
+                        data_dir=sub_flow['data_dir'],
+                        link=sub_flow['link'],
+                        parent_ids=sub_flow['parent_ids'],
+                        create_datetime=sub_flow['create_datetime']
                     )
                 sub_flow_data.append(sfs)
             ps = PhaseStatus(phase['seq_number'], phase['name'], sub_flow_data)

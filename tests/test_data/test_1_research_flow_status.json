@@ -7,6 +7,7 @@
                 {
                     "id": "rp_sf_1",
                     "name": "rp_sf_1 name",
+                    "data_dir": "",
                     "link": "rp_sf_1 link",
                     "parent_ids": [],
                     "create_datetime": 1
@@ -20,6 +21,7 @@
                 {
                     "id": "pw_sf_1",
                     "name": "pw_sf_1 name",
+                    "data_dir": "pwsf1datadir",
                     "link": "pw_sf_1 link",
                     "parent_ids": [
                         "ex_sf_1",
@@ -30,6 +32,7 @@
                 {
                     "id": "pw_sf_2",
                     "name": "pw_sf_2 name",
+                    "data_dir": "pwsf2datadir",
                     "link": "pw_sf_2 link",
                     "parent_ids": [
                         "rp_sf_1"
@@ -45,6 +48,7 @@
                 {
                     "id": "ex_sf_1",
                     "name": "ex_sf_1 name",
+                    "data_dir": "exsf1datadir",
                     "link": "ex_sf_1 link",
                     "parent_ids": [
                         "rp_sf_1"
@@ -54,6 +58,7 @@
                 {
                     "id": "ex_sf_2",
                     "name": "ex_sf_2 name",
+                    "data_dir": "exsf2datadir",
                     "link": "ex_sf_2 link",
                     "parent_ids": [
                         "rp_sf_1"
@@ -63,6 +68,7 @@
                 {
                     "id": "ex_sf_3",
                     "name": "ex_sf_3 name",
+                    "data_dir": "exsf3datadir",
                     "link": "ex_sf_3 link",
                     "parent_ids": [
                         "rp_sf_1"

@@ -51,7 +51,7 @@ class ResearchFlowStatus():
                 sfs = SubFlowStatus(
                         id=sub_flow['id'],
                         name=sub_flow['name'],
-                        data_dir=sub_flow['data_dir'],
+                        data_dir=sub_flow.get('data_dir'),
                         link=sub_flow['link'],
                         parent_ids=sub_flow['parent_ids'],
                         create_datetime=sub_flow['create_datetime']

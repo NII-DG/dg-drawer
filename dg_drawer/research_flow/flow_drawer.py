@@ -70,7 +70,10 @@ class FlowDrawer():
 
         nodes = []
         for sub_flow in sub_flow_list:
-            node_name = f'{sub_flow._name}[{sub_flow._data_dir}]'
+            if sub_flow._data_dir:
+                node_name = f'{sub_flow._name}[{sub_flow._data_dir}]'
+            else:
+                node_name = sub_flow._name
             node = Node(
                 id=sub_flow._id,
                 parent_ids=sub_flow._parent_ids,

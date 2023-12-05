@@ -10,6 +10,7 @@ class TestFlowDrawer(TestCase):
         node_A_1 = SubFlowStatus(
             id='1',
             name='node_A_1',
+            data_dir='',
             link='',
             parent_ids=[],
             create_datetime=1672498800
@@ -24,6 +25,7 @@ class TestFlowDrawer(TestCase):
         node_B_2 = SubFlowStatus(
                     id='2',
                     name='node_B_2',
+                    data_dir='nodeB2',
                     link='',
                     parent_ids=['1'],
                     create_datetime= 1675177200
@@ -32,6 +34,7 @@ class TestFlowDrawer(TestCase):
         node_B_3 = SubFlowStatus(
                     id='3',
                     name='node_B_3',
+                    data_dir='',
                     link='https://www.google.com/',
                     parent_ids=['1'],
                     create_datetime= 1675263600
@@ -40,6 +43,7 @@ class TestFlowDrawer(TestCase):
         node_B_4 = SubFlowStatus(
                     id='4',
                     name='node_B_4',
+                    data_dir='',
                     link='',
                     parent_ids=['1'],
                     create_datetime= 1675350000
@@ -48,6 +52,7 @@ class TestFlowDrawer(TestCase):
         node_B_5 = SubFlowStatus(
                     id='5',
                     name='node_B_5',
+                    data_dir='',
                     link='',
                     parent_ids=['1'],
                     create_datetime= 1675522800
@@ -56,6 +61,7 @@ class TestFlowDrawer(TestCase):
         node_B_6 = SubFlowStatus(
                     id='6',
                     name='node_B_6',
+                    data_dir='',
                     link='',
                     parent_ids=['1'],
                     create_datetime= 1675609200
@@ -70,6 +76,7 @@ class TestFlowDrawer(TestCase):
         node_C_7 = SubFlowStatus(
                     id='7',
                     name='node_C_7',
+                    data_dir='',
                     link='',
                     parent_ids=['2'],
                     create_datetime= 1677596400
@@ -78,6 +85,7 @@ class TestFlowDrawer(TestCase):
         node_C_8 = SubFlowStatus(
                     id='8',
                     name='node_C_8',
+                    data_dir='',
                     link='',
                     parent_ids=['4', '5'],
                     create_datetime= 1677682800
@@ -86,6 +94,7 @@ class TestFlowDrawer(TestCase):
         node_C_9 = SubFlowStatus(
                     id='9',
                     name='node_C_9',
+                    data_dir='',
                     link='https://www.google.com/',
                     parent_ids=['6'],
                     create_datetime= 1677769200
@@ -94,6 +103,7 @@ class TestFlowDrawer(TestCase):
         node_C_11 = SubFlowStatus(
                     id='11',
                     name='node_C_11',
+                    data_dir='',
                     link='',
                     parent_ids=['2', '3'],
                     create_datetime= 1677596400
@@ -102,6 +112,7 @@ class TestFlowDrawer(TestCase):
         node_C_14 = SubFlowStatus(
                     id='14',
                     name='node_C_14',
+                    data_dir='',
                     link='',
                     parent_ids=['2', '3', '1'],
                     create_datetime= 1677596401
@@ -117,6 +128,7 @@ class TestFlowDrawer(TestCase):
         node_D_10 = SubFlowStatus(
                     id='10',
                     name='node_D_10',
+                    data_dir='',
                     link='',
                     parent_ids=['7'],
                     create_datetime= 1677769200
@@ -125,6 +137,7 @@ class TestFlowDrawer(TestCase):
         node_D_12 = SubFlowStatus(
                     id='12',
                     name='node_D_12',
+                    data_dir='',
                     link='',
                     parent_ids=['5', '9'],
                     create_datetime= 1677769201
@@ -133,6 +146,7 @@ class TestFlowDrawer(TestCase):
         node_D_13 = SubFlowStatus(
                     id='13',
                     name='node_D_13',
+                    data_dir='',
                     link='https://www.google.com/',
                     parent_ids=['9', '2', '4', '1'],
                     create_datetime= 1677769201

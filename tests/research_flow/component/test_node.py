@@ -58,7 +58,7 @@ class TestNode(TestCase):
         node = Node(id=id, parent_ids=parent_ids, create_datetime=create_datetime, node_name=node_name, cx=cx, cy=cy, cr=cr, fill=fill, href=href)
 
         result = node.generate_svg_component()
-        expected_value = f'<a href="{href}" target="_blank"><circle cx="{cx}" cy="{cy}" r="{cr}" fill="{fill}" stroke="black" stroke-width="1"/></a>'
+        expected_value = f'<a href="{href}" target="_self"><circle cx="{cx}" cy="{cy}" r="{cr}" fill="{fill}" stroke="black" stroke-width="1"/></a>'
 
         self.assertEqual(expected_value,result)
 
